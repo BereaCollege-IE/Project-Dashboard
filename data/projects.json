@@ -13,14 +13,25 @@
           "title": "Prep ideas and agenda for virtual meeting",
           "done": false,
           "dueDate": "2026-05-28"
-        },
-        {
-          "id": "task-1c563004-6f50-41f6-a848-9dbbe61376cd",
-          "title": "Prep ideas and agenda for virtual meeting  (due 6/18/26)",
-          "done": false
         }
       ],
-      "blocks": []
+      "blocks": [
+        {
+          "id": "blk-17fff32d-935d-4ea6-a814-18c904e4f7e5",
+          "date": "2026-06-09",
+          "startTime": "09:00",
+          "endTime": "10:00",
+          "status": "planned",
+          "order": 0,
+          "subtasks": [
+            {
+              "id": "task-1c563004-6f50-41f6-a848-9dbbe61376cd",
+              "title": "Prep ideas and agenda for virtual meeting  (due 6/18/26)",
+              "done": false
+            }
+          ]
+        }
+      ]
     },
     {
       "slug": "cop-framework",
