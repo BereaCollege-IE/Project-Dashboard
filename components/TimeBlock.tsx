@@ -2,7 +2,7 @@
 
 // A single time block: a drag handle, its time range (inline-editable), project,
 // status (click to cycle), controls to move it back to the backlog or delete it,
-// and an inline subtask checklist. Reads its actions from the dashboard context.
+// and an inline subtask checklist whose items can be edited.
 
 import { useState } from "react";
 import { useDashboard } from "./DashboardProvider";
@@ -29,7 +29,7 @@ const STATUS_STYLES: Record<BlockStatus, string> = {
 };
 
 export default function TimeBlock({ block, dragHandleProps }: TimeBlockProps) {
-  const { today, actions } = useDashboard();
+  const { actions } = useDashboard();
   const { done, total } = blockProgress(block);
   const [newSubtask, setNewSubtask] = useState("");
   const [newSubtaskDue, setNewSubtaskDue] = useState("");
@@ -105,39 +105,11 @@ export default function TimeBlock({ block, dragHandleProps }: TimeBlockProps) {
 
         {block.subtasks.length > 0 && (
           <ul className="mt-2 space-y-1">
-            {block.subtasks.map((subtask: Subtask) => {
-              const overdue = isOverdue(subtask.dueDate, today ?? "", subtask.done);
-              return (
-                <li key={subtask.id} className="flex items-center gap-2 text-sm">
-                  <input
-                    type="checkbox"
-                    checked={subtask.done}
-                    onChange={() => actions.toggleSubtask(block.id, subtask.id)}
-                  />
-                  <span className={subtask.done ? "text-gray-400 line-through" : ""}>
-                    {subtask.title}
-                  </span>
-                  {subtask.dueDate && (
-                    <span
-                      className={`rounded px-1.5 py-0.5 text-xs ${
-                        overdue
-                          ? "bg-red-100 text-red-700"
-                          : "bg-gray-100 text-gray-500"
-                      }`}
-                    >
-                      {formatDueDate(subtask.dueDate)}
-                    </span>
-                  )}
-                  <button
-                    type="button"
-                    onClick={() => actions.deleteSubtask(block.id, subtask.id)}
-                    className="ml-auto text-xs text-gray-400 underline"
-                  >
-                    Delete
-                  </button>
-                </li>
-              );
-            })}
+            {block.subtasks.map((subtask: Subtask) => (
+              <li key={subtask.id}>
+                <SubtaskRow blockId={block.id} subtask={subtask} />
+              </li>
+            ))}
           </ul>
         )}
 
@@ -173,5 +145,103 @@ export default function TimeBlock({ block, dragHandleProps }: TimeBlockProps) {
         </form>
       </div>
     </article>
+  );
+}
+
+// One subtask: toggles between a display row and an inline edit row.
+function SubtaskRow({
+  blockId,
+  subtask,
+}: {
+  blockId: string;
+  subtask: Subtask;
+}) {
+  const { today, actions } = useDashboard();
+  const [editing, setEditing] = useState(false);
+  const [title, setTitle] = useState(subtask.title);
+  const [due, setDue] = useState(subtask.dueDate ?? "");
+
+  if (editing) {
+    return (
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          if (!title.trim()) return;
+          actions.updateSubtask(blockId, subtask.id, { title, dueDate: due });
+          setEditing(false);
+        }}
+        className="flex flex-wrap items-center gap-2 text-sm"
+      >
+        <input
+          type="text"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          className="flex-1 rounded border border-gray-300 px-2 py-1"
+        />
+        <input
+          type="text"
+          value={due}
+          onChange={(e) => setDue(e.target.value)}
+          placeholder="Due (optional)"
+          className="w-48 rounded border border-gray-300 px-2 py-1"
+        />
+        <button
+          type="submit"
+          className="rounded bg-gray-900 px-2 py-1 text-xs text-white"
+        >
+          Save
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            setTitle(subtask.title);
+            setDue(subtask.dueDate ?? "");
+            setEditing(false);
+          }}
+          className="text-xs text-gray-500 underline"
+        >
+          Cancel
+        </button>
+      </form>
+    );
+  }
+
+  const overdue = isOverdue(subtask.dueDate, today ?? "", subtask.done);
+  return (
+    <div className="flex items-center gap-2 text-sm">
+      <input
+        type="checkbox"
+        checked={subtask.done}
+        onChange={() => actions.toggleSubtask(blockId, subtask.id)}
+      />
+      <span className={subtask.done ? "text-gray-400 line-through" : ""}>
+        {subtask.title}
+      </span>
+      {subtask.dueDate && (
+        <span
+          className={`rounded px-1.5 py-0.5 text-xs ${
+            overdue ? "bg-red-100 text-red-700" : "bg-gray-100 text-gray-500"
+          }`}
+        >
+          {formatDueDate(subtask.dueDate)}
+        </span>
+      )}
+      <div className="ml-auto flex items-center gap-2">
+        <button
+          type="button"
+          onClick={() => setEditing(true)}
+          className="text-xs text-gray-500 underline"
+        >
+          Edit
+        </button>
+        <button
+          type="button"
+          onClick={() => actions.deleteSubtask(blockId, subtask.id)}
+          className="text-xs text-gray-400 underline"
+        >
+          Delete
+        </button>
+      </div>
+    </div>
   );
 }

@@ -314,3 +314,62 @@ export function addProject(
 ): ProjectsData {
   return { projects: [...data.projects, project] };
 }
+
+// Update editable fields on a project (title, description, dueDate, status).
+// The slug is intentionally not patchable, since tasks and history hang off it.
+export function updateProject(
+  data: ProjectsData,
+  slug: string,
+  patch: Partial<Pick<Project, "title" | "description" | "dueDate" | "status">>,
+  today: string
+): ProjectsData {
+  return {
+    projects: data.projects.map((p) =>
+      p.slug === slug ? { ...p, ...patch, lastTouched: today } : p
+    ),
+  };
+}
+
+// --- Editing tasks ---
+
+// Update a backlog task's title and/or due date.
+export function updateBacklogTask(
+  data: ProjectsData,
+  slug: string,
+  taskId: string,
+  patch: Partial<Pick<Subtask, "title" | "dueDate">>,
+  today: string
+): ProjectsData {
+  return {
+    projects: data.projects.map((p) =>
+      p.slug === slug
+        ? {
+            ...p,
+            tasks: (p.tasks ?? []).map((t) =>
+              t.id === taskId ? { ...t, ...patch } : t
+            ),
+            lastTouched: today,
+          }
+        : p
+    ),
+  };
+}
+
+// Update a block subtask's title and/or due date.
+export function updateSubtask(
+  data: ProjectsData,
+  blockId: string,
+  subtaskId: string,
+  patch: Partial<Pick<Subtask, "title" | "dueDate">>,
+  today: string
+): ProjectsData {
+  return mapProjectOwning(data, blockId, (p) => ({
+    ...mapBlock(p, blockId, (b) => ({
+      ...b,
+      subtasks: b.subtasks.map((s) =>
+        s.id === subtaskId ? { ...s, ...patch } : s
+      ),
+    })),
+    lastTouched: today,
+  }));
+}

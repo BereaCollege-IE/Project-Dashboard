@@ -23,6 +23,7 @@ import type {
   TimeBlock,
   Subtask,
   BlockStatus,
+  ProjectStatus,
 } from "@/lib/types";
 import { todayISO } from "@/lib/data";
 import * as mutate from "@/lib/mutations";
@@ -53,6 +54,11 @@ interface DashboardActions {
   addSubtask: (blockId: string, title: string, dueDate?: string) => void;
   toggleSubtask: (blockId: string, subtaskId: string) => void;
   deleteSubtask: (blockId: string, subtaskId: string) => void;
+  updateSubtask: (
+    blockId: string,
+    subtaskId: string,
+    patch: { title?: string; dueDate?: string }
+  ) => void;
   // Move a scheduled block back out of Today, returning its tasks to the backlog
   unscheduleBlock: (blockId: string) => void;
   bumpProject: (slug: string) => void;
@@ -60,14 +66,28 @@ interface DashboardActions {
   addBacklogTask: (slug: string, title: string, dueDate?: string) => void;
   toggleBacklogTask: (slug: string, taskId: string) => void;
   deleteBacklogTask: (slug: string, taskId: string) => void;
+  updateBacklogTask: (
+    slug: string,
+    taskId: string,
+    patch: { title?: string; dueDate?: string }
+  ) => void;
   scheduleTask: (
     slug: string,
     taskId: string,
     startTime?: string,
     endTime?: string
   ) => void;
-  // Create a brand-new project
+  // Projects
   addProject: (title: string, dueDate?: string) => void;
+  updateProject: (
+    slug: string,
+    patch: {
+      title?: string;
+      description?: string;
+      dueDate?: string;
+      status?: ProjectStatus;
+    }
+  ) => void;
 }
 
 interface DashboardContextValue {
@@ -258,6 +278,17 @@ export default function DashboardProvider({
       if (!today) return;
       apply(mutate.deleteSubtask(dataRef.current, blockId, subtaskId, today));
     },
+    updateSubtask: (blockId, subtaskId, patch) => {
+      if (!today) return;
+      const next = { ...patch };
+      if (next.dueDate !== undefined) next.dueDate = next.dueDate.trim() || undefined;
+      if (next.title !== undefined) {
+        const t = next.title.trim();
+        if (!t) return; // refuse to blank a title
+        next.title = t;
+      }
+      apply(mutate.updateSubtask(dataRef.current, blockId, subtaskId, next, today));
+    },
     unscheduleBlock: (blockId) => {
       if (!today) return;
       apply(mutate.unscheduleBlock(dataRef.current, blockId, today));
@@ -293,6 +324,17 @@ export default function DashboardProvider({
       if (!today) return;
       apply(mutate.deleteBacklogTask(dataRef.current, slug, taskId, today));
     },
+    updateBacklogTask: (slug, taskId, patch) => {
+      if (!today) return;
+      const next = { ...patch };
+      if (next.dueDate !== undefined) next.dueDate = next.dueDate.trim() || undefined;
+      if (next.title !== undefined) {
+        const t = next.title.trim();
+        if (!t) return; // refuse to blank a title
+        next.title = t;
+      }
+      apply(mutate.updateBacklogTask(dataRef.current, slug, taskId, next, today));
+    },
     scheduleTask: (slug, taskId, startTime = DEFAULT_START, endTime = DEFAULT_END) => {
       if (!today) return;
       const block: TimeBlock = {
@@ -319,6 +361,17 @@ export default function DashboardProvider({
         blocks: [],
       };
       apply(mutate.addProject(dataRef.current, project));
+    },
+    updateProject: (slug, patch) => {
+      if (!today) return;
+      const next = { ...patch };
+      if (next.dueDate !== undefined) next.dueDate = next.dueDate.trim() || undefined;
+      if (next.title !== undefined) {
+        const t = next.title.trim();
+        if (!t) return; // refuse to blank a title
+        next.title = t;
+      }
+      apply(mutate.updateProject(dataRef.current, slug, next, today));
     },
   };
 
