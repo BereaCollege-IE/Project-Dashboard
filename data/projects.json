@@ -31,19 +31,30 @@
       "dueDate": "Summer 2026",
       "tasks": [
         {
-          "id": "cop-framework-t1",
-          "title": "Revise framework with additional resources/material added to OneDrive folder",
-          "done": false,
-          "dueDate": "2026-06-15"
-        },
-        {
           "id": "cop-framework-t2",
           "title": "Draft cover letter for sending framework to CoP members for review",
           "done": false,
           "dueDate": "2026-06-15"
         }
       ],
-      "blocks": []
+      "blocks": [
+        {
+          "id": "blk-99126623-bf3e-4c8a-a086-321df80c1fbd",
+          "date": "2026-06-10",
+          "startTime": "06:00",
+          "endTime": "07:00",
+          "status": "planned",
+          "order": 0,
+          "subtasks": [
+            {
+              "id": "cop-framework-t1",
+              "title": "Revise framework with additional resources/material added to OneDrive folder",
+              "done": false,
+              "dueDate": "2026-06-15"
+            }
+          ]
+        }
+      ]
     },
     {
       "slug": "summer-internships",
@@ -481,12 +492,5 @@
       ],
       "blocks": []
     }
-  ],
-  "settings": {
-    "staleAfterDays": 5,
-    "defaultStartTime": "06:00",
-    "defaultBlockMinutes": 60,
-    "assistantModel": "claude-sonnet-4-6",
-    "reminderEmail": "smithro@berea.edu"
-  }
+  ]
 }
