@@ -98,7 +98,7 @@ export default function DailySchedule() {
           onClick={() => setShowForm((v) => !v)}
           className="rounded bg-gray-900 px-3 py-1 text-sm text-white"
         >
-          {showForm ? "Close" : "Add day"}
+          {showForm ? "Close" : "Add Project"}
         </button>
       </div>
 
@@ -119,7 +119,7 @@ export default function DailySchedule() {
 
       {blocks.length === 0 ? (
         <p className="rounded border border-dashed border-gray-300 p-6 text-center text-sm text-gray-500">
-          Nothing scheduled for {label.toLowerCase()}. Add a day, or schedule a
+          Nothing scheduled for {label.toLowerCase()}. Add a project, or schedule a
           task from tasks or deadlines below.
         </p>
       ) : (
