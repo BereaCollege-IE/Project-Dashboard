@@ -40,7 +40,7 @@ export default function StaleProjects() {
             return (
               <li
                 key={project.slug}
-                className="flex items-center justify-between rounded-lg border border-gray-200 bg-white p-3"
+                className="flex items-center justify-between rounded-lg border border-gray-200 bg-white/80 p-3 shadow-sm backdrop-blur-sm"
               >
                 <div>
                   <p className="text-sm font-medium">{project.title}</p>

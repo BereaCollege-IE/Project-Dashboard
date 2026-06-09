@@ -73,7 +73,7 @@ function NewProjectForm({
         e.preventDefault();
         if (title.trim()) onAdd(title, due);
       }}
-      className="flex flex-wrap items-end gap-3 rounded border border-gray-200 bg-white p-3"
+      className="flex flex-wrap items-end gap-3 rounded border border-gray-200 bg-white/80 shadow-sm backdrop-blur-sm p-3"
     >
       <label className="flex flex-1 flex-col text-xs text-gray-600">
         Project title
@@ -120,7 +120,7 @@ function ProjectCard({
   const pending = tasks.filter((t) => !t.done).length;
 
   return (
-    <details open className="rounded-lg border border-gray-200 bg-white">
+    <details open className="rounded-lg border border-gray-200 bg-white/80 shadow-sm backdrop-blur-sm">
       <summary className="flex cursor-pointer items-center justify-between gap-3 p-3">
         <span className="text-sm font-medium">{project.title}</span>
         <span className="flex items-center gap-2 text-xs text-gray-500">

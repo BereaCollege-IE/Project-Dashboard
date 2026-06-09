@@ -35,7 +35,7 @@ export default function TimeBlock({ block, dragHandleProps }: TimeBlockProps) {
   const [newSubtaskDue, setNewSubtaskDue] = useState("");
 
   return (
-    <article className="rounded-lg border border-gray-200 bg-white p-4">
+    <article className="rounded-lg border border-gray-200 bg-white/80 p-4 shadow-sm backdrop-blur-sm">
       <header className="flex items-start gap-3">
         {/* Drag handle. Only this starts a drag. */}
         <button

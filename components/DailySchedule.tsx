@@ -142,7 +142,7 @@ function AddBlockForm({
         e.preventDefault();
         if (slug) onAdd(slug, start, end);
       }}
-      className="flex flex-wrap items-end gap-3 rounded border border-gray-200 bg-white p-3"
+      className="flex flex-wrap items-end gap-3 rounded border border-gray-200 bg-white/80 p-3 shadow-sm backdrop-blur-sm"
     >
       <label className="flex flex-col text-xs text-gray-600">
         Project
