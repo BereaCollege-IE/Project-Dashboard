@@ -55,9 +55,12 @@ export async function PUT(request: Request) {
     return NextResponse.json({ sha: result.sha });
   } catch (err) {
     const message = err instanceof Error ? err.message : "Unknown error";
+    // Surface a stale-SHA conflict as a real 409 so the client can refresh
+    // its SHA and retry, instead of treating it as a generic failure.
+    const status = (err as Error & { status?: number }).status === 409 ? 409 : 500;
     return NextResponse.json(
       { error: `Could not save changes. ${message}` },
-      { status: 500 }
+      { status }
     );
   }
 }

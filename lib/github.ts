@@ -94,7 +94,11 @@ export async function saveProjects(
 
   if (!res.ok) {
     const body = await res.text();
-    throw new Error(`GitHub write failed: ${res.status} ${body}`);
+    const err = new Error(`GitHub write failed: ${res.status} ${body}`) as Error & {
+      status?: number;
+    };
+    err.status = res.status; // 409 means the SHA was stale (file changed underneath us)
+    throw err;
   }
 
   const json = (await res.json()) as { content: { sha: string } };

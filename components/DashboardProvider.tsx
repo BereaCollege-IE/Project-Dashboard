@@ -176,6 +176,9 @@ export default function DashboardProvider({
   const shaRef = useRef(initialSha);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const undoRef = useRef<ProjectsData[]>([]);
+  // True once the user has made an edit this session; blocks the mount-time
+  // refresh from clobbering unsaved local changes.
+  const dirtyRef = useRef(false);
 
   const settings = getSettings(data);
 
@@ -183,30 +186,77 @@ export default function DashboardProvider({
     const t = todayISO();
     setToday(t);
     setViewedDay(t);
+
+    // The server-rendered page can be cached for up to 30s, so the SHA it
+    // shipped with may already be stale. Fetch the live data + SHA once on
+    // mount so the first save doesn't start from behind.
+    void (async () => {
+      try {
+        const res = await fetch("/api/projects");
+        if (!res.ok) return;
+        const json = (await res.json()) as { data: ProjectsData; sha: string };
+        if (dirtyRef.current) {
+          // User already edited; just take the fresher SHA reference if we
+          // haven't saved yet (their save will reconcile via the 409 retry).
+          return;
+        }
+        dataRef.current = json.data;
+        shaRef.current = json.sha;
+        setData(json.data);
+      } catch {
+        // Non-fatal: the page still works with the server-rendered copy.
+      }
+    })();
+  }, []);
+
+  // One PUT attempt. Returns the new SHA, or throws with .status set.
+  const putOnce = useCallback(async (): Promise<string> => {
+    const res = await fetch("/api/projects", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ data: dataRef.current, sha: shaRef.current }),
+    });
+    if (!res.ok) {
+      const body = (await res.json().catch(() => null)) as { error?: string } | null;
+      const err = new Error(body?.error ?? `Save failed (${res.status}).`) as Error & {
+        status?: number;
+      };
+      err.status = res.status;
+      throw err;
+    }
+    const json = (await res.json()) as { sha: string };
+    return json.sha;
   }, []);
 
   const save = useCallback(async () => {
     setSaving(true);
     setError(null);
     try {
-      const res = await fetch("/api/projects", {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ data: dataRef.current, sha: shaRef.current }),
-      });
-      if (!res.ok) {
-        const body = (await res.json().catch(() => null)) as { error?: string } | null;
-        throw new Error(body?.error ?? `Save failed (${res.status}).`);
-      }
-      const json = (await res.json()) as { sha: string };
-      shaRef.current = json.sha;
+      shaRef.current = await putOnce();
     } catch (err) {
+      const status = (err as Error & { status?: number }).status;
+      if (status === 409) {
+        // The file changed underneath us (stale SHA). Single-user recovery:
+        // fetch the current SHA and retry once with our local data.
+        try {
+          const fresh = await fetch("/api/projects");
+          if (fresh.ok) {
+            const json = (await fresh.json()) as { sha: string };
+            shaRef.current = json.sha;
+            shaRef.current = await putOnce();
+            setSaving(false);
+            return;
+          }
+        } catch {
+          // fall through to the error message below
+        }
+      }
       const message = err instanceof Error ? err.message : "Unknown error";
       setError(`${message} Your latest change is shown but not yet saved.`);
     } finally {
       setSaving(false);
     }
-  }, []);
+  }, [putOnce]);
 
   const scheduleSave = useCallback(() => {
     if (timerRef.current) clearTimeout(timerRef.current);
@@ -219,6 +269,7 @@ export default function DashboardProvider({
   // ref, then queue a save.
   const apply = useCallback(
     (next: ProjectsData) => {
+      dirtyRef.current = true;
       undoRef.current.push(dataRef.current);
       if (undoRef.current.length > 25) undoRef.current.shift();
       setUndoDepth(undoRef.current.length);
