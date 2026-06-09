@@ -58,10 +58,10 @@ export default function UpcomingDeadlines() {
             return (
               <li
                 key={`${d.projectSlug}-${d.taskId ?? "project"}-${d.dueDate}`}
-                className="flex items-center justify-between gap-3 rounded-lg border border-gray-200 bg-white/80 p-3 shadow-sm backdrop-blur-sm"
+                className="flex items-start justify-between gap-3 rounded-lg border border-gray-200 bg-white/80 p-3 shadow-sm backdrop-blur-sm"
               >
                 <div className="min-w-0">
-                  <p className="truncate text-sm">
+                  <p className="text-sm">
                     {d.title}
                     {d.priority && (
                       <span className="ml-2 rounded bg-gray-100 px-1.5 py-0.5 text-[10px] uppercase text-gray-500">
@@ -73,7 +73,7 @@ export default function UpcomingDeadlines() {
                 </div>
                 <div className="flex shrink-0 items-center gap-2">
                   <span
-                    className={`rounded px-2 py-0.5 text-xs ${
+                    className={`whitespace-nowrap rounded px-2 py-0.5 text-xs ${
                       overdue ? "bg-red-100 text-red-700" : "bg-gray-100 text-gray-600"
                     }`}
                   >

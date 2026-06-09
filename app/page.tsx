@@ -9,6 +9,7 @@ import DailySchedule from "@/components/DailySchedule";
 import UpcomingDeadlines from "@/components/UpcomingDeadlines";
 import StaleProjects from "@/components/StaleProjects";
 import Backlog from "@/components/Backlog";
+import Archive from "@/components/Archive";
 import StatsSection from "@/components/StatsSection";
 import Assistant from "@/components/Assistant";
 import { readProjects } from "@/lib/github";
@@ -59,8 +60,11 @@ export default async function DashboardPage() {
         {/* Anything active that has gone quiet for a while. */}
         <StaleProjects />
 
-        {/* Every project and its tasks, with search, sort, and tags. */}
+        {/* Every active project and its tasks, with search, sort, and tags. */}
         <Backlog />
+
+        {/* Completed projects, filed away for long-term storage. */}
+        <Archive />
       </main>
 
       {/* Floating chat assistant (proposes changes, you confirm). */}

@@ -66,12 +66,24 @@ one repo, Contents: Read and write.
 - `lib/types.ts` / `lib/data.ts` / `lib/mutations.ts` — types, pure helpers
   (deadlines, stats, day math, recurrence advance), pure mutations. Mutations
   stamp `lastTouched`; task completion stamps `completedAt`.
-- UI sections on `app/page.tsx`: `GlanceHeader` (stat chips, Undo, Export CSV,
-  Settings), `DailySchedule` (day nav ‹›, dnd-kit drag reorder),
-  `UpcomingDeadlines` (7/14/30/90-day window), `StaleProjects` (threshold from
-  settings), `Backlog` (search/sort/tag filter, priority + weekly/monthly
-  recurrence on tasks, tags on projects), `StatsSection` (progress bars),
-  `Assistant` (floating chat).
+- UI sections on `app/page.tsx` (container is `max-w-5xl`): `GlanceHeader`
+  (stat chips, Undo, Export CSV, Settings), `DailySchedule` (day nav ‹›,
+  dnd-kit drag reorder), then a two-column row pairing `StatsSection`
+  (Progress bars, left) with `UpcomingDeadlines` (7/14/30/90-day window,
+  right) that stacks to one column below the `lg` breakpoint, `StaleProjects`
+  (threshold from settings), `Backlog` (search/sort/tag filter, priority +
+  weekly/monthly recurrence on tasks, tags on projects; hides completed
+  projects), `Archive` (completed projects, collapsed, Restore button; hidden
+  when empty), `Assistant` (floating chat).
+- Completed projects (`status: "complete"`) are treated as archived: filtered
+  out of `Backlog`, surfaced only in `Archive`, and skipped by `getStats` (so
+  they drop out of both the Progress bars and the header chips). Marking
+  complete is done via the project Edit form; `Archive`'s Restore sets status
+  back to `active`. No new data fields; schema unchanged.
+- UI labels diverge from code identifiers (Rob's renames): the backlog shows as
+  "Projects & tasks" / "Tasks", time blocks show as "Day" / "Add Project", and
+  "Move to backlog" reads "Move to tasks". Component and type names (`Backlog`,
+  `TimeBlock`, etc.) are unchanged.
 - `components/Assistant.tsx` + `lib/assistant.ts` + `app/api/assistant/route.ts`
   — Claude assistant (model from settings, default `claude-sonnet-4-6`). Tools
   are PROPOSALS ONLY: rendered as Apply/Skip cards; Apply runs through the

@@ -44,6 +44,8 @@ export default function Backlog() {
   const q = query.trim().toLowerCase();
 
   const projects = data.projects.filter((p) => {
+    // Completed projects live in the Archive section, not here.
+    if (p.status === "complete") return false;
     if (tag && !(p.tags ?? []).includes(tag)) return false;
     if (!q) return true;
     if (p.title.toLowerCase().includes(q)) return true;

@@ -257,6 +257,9 @@ export function getStats(data: ProjectsData, today: string): DashboardStats {
   const perProject: DashboardStats["perProject"] = [];
 
   for (const project of data.projects) {
+    // Completed projects are archived, so they drop out of the active stats
+    // (the header chips and the Progress bars).
+    if (project.status === "complete") continue;
     const tasks = project.tasks ?? [];
     let pDone = 0;
     for (const t of tasks) {
