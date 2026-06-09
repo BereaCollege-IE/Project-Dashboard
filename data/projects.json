@@ -1,0 +1,480 @@
+{
+  "projects": [
+    {
+      "slug": "acs-working-group",
+      "title": "ACS Working Group",
+      "description": "",
+      "status": "active",
+      "lastTouched": "2026-06-09",
+      "dueDate": "2026-08-14",
+      "tasks": [
+        {
+          "id": "acs-working-group-t1",
+          "title": "Prep ideas and agenda for virtual meeting",
+          "done": false,
+          "dueDate": "2026-05-28"
+        }
+      ],
+      "blocks": []
+    },
+    {
+      "slug": "cop-framework",
+      "title": "CoP Framework",
+      "description": "",
+      "status": "active",
+      "lastTouched": "2026-06-09",
+      "dueDate": "Summer 2026",
+      "tasks": [
+        {
+          "id": "cop-framework-t1",
+          "title": "Revise framework with additional resources/material added to OneDrive folder",
+          "done": false,
+          "dueDate": "2026-06-15"
+        },
+        {
+          "id": "cop-framework-t2",
+          "title": "Draft cover letter for sending framework to CoP members for review",
+          "done": false,
+          "dueDate": "2026-06-15"
+        }
+      ],
+      "blocks": []
+    },
+    {
+      "slug": "summer-internships",
+      "title": "Summer Internships",
+      "description": "",
+      "status": "active",
+      "lastTouched": "2026-06-09",
+      "dueDate": "now through October 15, 2026",
+      "tasks": [
+        {
+          "id": "summer-internships-t1",
+          "title": "Weekly feedback on reflections",
+          "done": false,
+          "dueDate": "now through August 1, 2026"
+        },
+        {
+          "id": "summer-internships-t2",
+          "title": "Create plan for collecting the 2 required reflection prompts",
+          "done": false,
+          "dueDate": "2026-06-27"
+        },
+        {
+          "id": "summer-internships-t3",
+          "title": "Grade papers",
+          "done": false,
+          "dueDate": "2026-09-15"
+        },
+        {
+          "id": "summer-internships-t4",
+          "title": "Schedule open house/presentations",
+          "done": false,
+          "dueDate": "2026-08-30"
+        },
+        {
+          "id": "summer-internships-t5",
+          "title": "Grade presentations",
+          "done": false,
+          "dueDate": "2026-10-15"
+        },
+        {
+          "id": "summer-internships-t6",
+          "title": "Submit grades",
+          "done": false,
+          "dueDate": "2026-10-15"
+        }
+      ],
+      "blocks": []
+    },
+    {
+      "slug": "project-tracker",
+      "title": "Project Tracker",
+      "description": "",
+      "status": "active",
+      "lastTouched": "2026-06-09",
+      "tasks": [
+        {
+          "id": "project-tracker-t1",
+          "title": "Continue making any revisions",
+          "done": false,
+          "dueDate": "2026-06-19"
+        },
+        {
+          "id": "project-tracker-t2",
+          "title": "Once revisions are complete, share user guide with others",
+          "done": false,
+          "dueDate": "2026-06-24"
+        }
+      ],
+      "blocks": []
+    },
+    {
+      "slug": "student-support-assessment",
+      "title": "Student Support Assessment",
+      "description": "",
+      "status": "active",
+      "lastTouched": "2026-06-09",
+      "tasks": [
+        {
+          "id": "student-support-assessment-t1",
+          "title": "Send June assessment Tip",
+          "done": false,
+          "dueDate": "2026-06-15"
+        },
+        {
+          "id": "student-support-assessment-t2",
+          "title": "Send July assessment Tip",
+          "done": false,
+          "dueDate": "2026-07-15"
+        },
+        {
+          "id": "student-support-assessment-t3",
+          "title": "Collect and organize all reports in Box",
+          "done": false,
+          "dueDate": "2026-08-05"
+        },
+        {
+          "id": "student-support-assessment-t4",
+          "title": "Send August assessment tip",
+          "done": false,
+          "dueDate": "2026-08-15"
+        },
+        {
+          "id": "student-support-assessment-t5",
+          "title": "Refine assessment review app in Claude Cowork or Claude Code",
+          "done": false,
+          "dueDate": "2026-08-30"
+        },
+        {
+          "id": "student-support-assessment-t6",
+          "title": "Review all reports and draft feedback letters",
+          "done": false,
+          "dueDate": "2026-09-15"
+        }
+      ],
+      "blocks": []
+    },
+    {
+      "slug": "administrative-assessment",
+      "title": "Administrative Assessment",
+      "description": "",
+      "status": "active",
+      "lastTouched": "2026-06-09",
+      "tasks": [
+        {
+          "id": "administrative-assessment-t1",
+          "title": "Send June assessment Tip",
+          "done": false,
+          "dueDate": "2026-06-15"
+        },
+        {
+          "id": "administrative-assessment-t2",
+          "title": "Send July assessment Tip",
+          "done": false,
+          "dueDate": "2026-07-15"
+        },
+        {
+          "id": "administrative-assessment-t3",
+          "title": "Send August assessment tip",
+          "done": false,
+          "dueDate": "2026-08-15"
+        }
+      ],
+      "blocks": []
+    },
+    {
+      "slug": "review-academic-assessment-reports",
+      "title": "Review of Academic Assessment Reports",
+      "description": "",
+      "status": "active",
+      "lastTouched": "2026-06-09",
+      "tasks": [
+        {
+          "id": "review-academic-assessment-reports-t1",
+          "title": "Organize all reports and supporting material in Box",
+          "done": false,
+          "dueDate": "2026-06-20"
+        },
+        {
+          "id": "review-academic-assessment-reports-t2",
+          "title": "Refine assessment review app in Claude Cowork or Claude Code",
+          "done": false,
+          "dueDate": "2026-06-25"
+        },
+        {
+          "id": "review-academic-assessment-reports-t3",
+          "title": "Review all reports and draft feedback letters",
+          "done": false,
+          "dueDate": "2026-08-15"
+        }
+      ],
+      "blocks": []
+    },
+    {
+      "slug": "academic-affairs-newsletter",
+      "title": "Academic Affairs Office Newsletter",
+      "description": "",
+      "status": "active",
+      "lastTouched": "2026-06-09",
+      "tasks": [
+        {
+          "id": "academic-affairs-newsletter-t1",
+          "title": "Explore and select possible formats (html file, pdf, etc.)",
+          "done": false,
+          "dueDate": "2026-06-26"
+        },
+        {
+          "id": "academic-affairs-newsletter-t2",
+          "title": "Draft plan for building & setting up the newsletter workflow",
+          "done": false,
+          "dueDate": "2026-07-08"
+        },
+        {
+          "id": "academic-affairs-newsletter-t3",
+          "title": "Create workflow/app for generating monthly newsletter",
+          "done": false,
+          "dueDate": "2026-07-13"
+        },
+        {
+          "id": "academic-affairs-newsletter-t4",
+          "title": "Train AA office on how to generate and submit submissions",
+          "done": false,
+          "dueDate": "2026-07-24"
+        }
+      ],
+      "blocks": []
+    },
+    {
+      "slug": "sacscoc-institute-assessment-workshop",
+      "title": "SACSCOC Institute: Assessment Workshop",
+      "description": "Part of the SACSCOC Summer Institute.",
+      "status": "active",
+      "lastTouched": "2026-06-09",
+      "tasks": [
+        {
+          "id": "sacscoc-institute-assessment-workshop-t1",
+          "title": "Meet with SACSCOC Institute staff (Alana Veal) to discuss workshop logistics",
+          "done": false,
+          "dueDate": "2026-06-16"
+        },
+        {
+          "id": "sacscoc-institute-assessment-workshop-t2",
+          "title": "Meet with SACSCOC staff assistants (Nuria & Alexei) to discuss syllabus and workshop details",
+          "done": false,
+          "dueDate": "2026-06-19"
+        },
+        {
+          "id": "sacscoc-institute-assessment-workshop-t3",
+          "title": "Assemble pre-workshop readings to distribute 2-3 weeks before workshop",
+          "done": false,
+          "dueDate": "2026-07-01"
+        },
+        {
+          "id": "sacscoc-institute-assessment-workshop-t4",
+          "title": "Assemble resources to share at institute",
+          "done": false,
+          "dueDate": "2026-07-17"
+        },
+        {
+          "id": "sacscoc-institute-assessment-workshop-t5",
+          "title": "Create detailed outline and slide deck for presentation",
+          "done": false,
+          "dueDate": "2026-07-17"
+        },
+        {
+          "id": "sacscoc-institute-assessment-workshop-t6",
+          "title": "Create demonstration materials for use during workshop",
+          "done": false,
+          "dueDate": "2026-07-17"
+        }
+      ],
+      "blocks": []
+    },
+    {
+      "slug": "sacscoc-institute-accreditation-workshop",
+      "title": "SACSCOC Institute: Accreditation Workshop",
+      "description": "Part of the SACSCOC Summer Institute.",
+      "status": "active",
+      "lastTouched": "2026-06-09",
+      "tasks": [
+        {
+          "id": "sacscoc-institute-accreditation-workshop-t1",
+          "title": "Meet with SACSCOC Institute staff (Alana Veal) to discuss workshop logistics",
+          "done": false,
+          "dueDate": "2026-06-16"
+        },
+        {
+          "id": "sacscoc-institute-accreditation-workshop-t2",
+          "title": "Meet with SACSCOC staff assistants (Nuria & Alexei) to discuss syllabus and workshop details",
+          "done": false,
+          "dueDate": "2026-06-19"
+        },
+        {
+          "id": "sacscoc-institute-accreditation-workshop-t3",
+          "title": "Assemble pre-workshop readings to distribute 2-3 weeks before workshop",
+          "done": false,
+          "dueDate": "2026-07-01"
+        },
+        {
+          "id": "sacscoc-institute-accreditation-workshop-t4",
+          "title": "Assemble resources to share at institute",
+          "done": false,
+          "dueDate": "2026-07-17"
+        },
+        {
+          "id": "sacscoc-institute-accreditation-workshop-t5",
+          "title": "Create detailed outline and slide deck for presentation",
+          "done": false,
+          "dueDate": "2026-07-17"
+        },
+        {
+          "id": "sacscoc-institute-accreditation-workshop-t6",
+          "title": "Create demonstration materials for use during workshop",
+          "done": false,
+          "dueDate": "2026-07-17"
+        }
+      ],
+      "blocks": []
+    },
+    {
+      "slug": "curriculum-mapping",
+      "title": "Curriculum Mapping",
+      "description": "Consider completing the build-and-deploy task sooner so it can be used as a demo during the SACSCOC Summer Institute workshop.",
+      "status": "active",
+      "lastTouched": "2026-06-09",
+      "tasks": [
+        {
+          "id": "curriculum-mapping-t1",
+          "title": "Decide on best interface (Cowork project vs. App with Claude Code)",
+          "done": false,
+          "dueDate": "2026-07-25"
+        },
+        {
+          "id": "curriculum-mapping-t2",
+          "title": "Build and deploy app for generating maps",
+          "done": false,
+          "dueDate": "2026-08-10"
+        }
+      ],
+      "blocks": []
+    },
+    {
+      "slug": "aacu-ai-institute",
+      "title": "AAC&U AI Institute",
+      "description": "Awaiting official notification and timeline information from AAC&U.",
+      "status": "active",
+      "lastTouched": "2026-06-09",
+      "tasks": [
+        {
+          "id": "aacu-ai-institute-t1",
+          "title": "Schedule first meeting with all 5 participants to review expectations and set timeline and goals for our work with the Institute",
+          "done": false,
+          "dueDate": "2026-08-01"
+        }
+      ],
+      "blocks": []
+    },
+    {
+      "slug": "academic-department-dashboards",
+      "title": "Academic Department Dashboards",
+      "description": "",
+      "status": "active",
+      "lastTouched": "2026-06-09",
+      "tasks": [
+        {
+          "id": "academic-department-dashboards-t1",
+          "title": "Have Mike create the 4 Argos reports to recreate the dashboards",
+          "done": false,
+          "dueDate": "2026-06-23"
+        },
+        {
+          "id": "academic-department-dashboards-t2",
+          "title": "Begin auditing and correcting data errors",
+          "done": false,
+          "dueDate": "2026-08-25"
+        },
+        {
+          "id": "academic-department-dashboards-t3",
+          "title": "Build prototype dashboard either in PowerBI, E-visions, Insights, or a stand-alone web app",
+          "done": false,
+          "dueDate": "2026-08-05"
+        }
+      ],
+      "blocks": []
+    },
+    {
+      "slug": "course-scheduling-project",
+      "title": "Course Scheduling Project",
+      "description": "",
+      "status": "active",
+      "lastTouched": "2026-06-09",
+      "tasks": [
+        {
+          "id": "course-scheduling-project-t1",
+          "title": "Establish what the clear end goal is before beginning any work on this",
+          "done": false,
+          "dueDate": "2026-07-28"
+        }
+      ],
+      "blocks": []
+    },
+    {
+      "slug": "launch-week-sessions",
+      "title": "Launch Week Sessions",
+      "description": "",
+      "status": "active",
+      "lastTouched": "2026-06-09",
+      "tasks": [
+        {
+          "id": "launch-week-sessions-t1",
+          "title": "Prepare material and slide deck for AI & Workflows session",
+          "done": false,
+          "dueDate": "2026-08-07"
+        },
+        {
+          "id": "launch-week-sessions-t2",
+          "title": "Prepare material and slide deck for Assessment session",
+          "done": false,
+          "dueDate": "2026-08-10"
+        },
+        {
+          "id": "launch-week-sessions-t3",
+          "title": "Prepare material and slide deck for Training Your AI session",
+          "done": false,
+          "dueDate": "2026-08-11"
+        },
+        {
+          "id": "launch-week-sessions-t4",
+          "title": "Prepare material and slide deck for AI & Grading/Assessment session",
+          "done": false,
+          "dueDate": "2026-08-12"
+        }
+      ],
+      "blocks": []
+    },
+    {
+      "slug": "sacscoc-on-site-visit",
+      "title": "SACSCOC On-Site Visit",
+      "description": "",
+      "status": "active",
+      "lastTouched": "2026-06-09",
+      "dueDate": "September 14-17, 2026",
+      "tasks": [
+        {
+          "id": "sacscoc-on-site-visit-t1",
+          "title": "Complete assigned reviews",
+          "done": false,
+          "dueDate": "2026-09-07"
+        },
+        {
+          "id": "sacscoc-on-site-visit-t2",
+          "title": "Complete post-visit revisions and final drafts of all reviews",
+          "done": false,
+          "dueDate": "2026-09-20"
+        }
+      ],
+      "blocks": []
+    }
+  ]
+}
