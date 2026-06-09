@@ -1,0 +1,83 @@
+{
+  "projects": [
+    {
+      "slug": "accreditation-self-study",
+      "title": "Accreditation Self-Study",
+      "description": "Draft the institutional effectiveness chapter for the SACSCOC review.",
+      "status": "active",
+      "lastTouched": "2026-06-09",
+      "blocks": [
+        {
+          "id": "blk-001",
+          "date": "2026-06-09",
+          "startTime": "09:00",
+          "endTime": "10:30",
+          "status": "in_progress",
+          "order": 0,
+          "subtasks": [
+            { "id": "sub-001", "title": "Pull last cycle's outcomes data", "done": true },
+            { "id": "sub-002", "title": "Draft the assessment narrative", "done": false },
+            { "id": "sub-003", "title": "Flag gaps for the committee", "done": false }
+          ]
+        },
+        {
+          "id": "blk-002",
+          "date": "2026-06-09",
+          "startTime": "13:00",
+          "endTime": "14:00",
+          "status": "planned",
+          "order": 1,
+          "subtasks": [
+            { "id": "sub-004", "title": "Review reviewer comments", "done": false }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "psych-stats-redesign",
+      "title": "Psych Stats Course Redesign",
+      "description": "Rework the data visualization unit around honest charting.",
+      "status": "active",
+      "lastTouched": "2026-06-08",
+      "blocks": [
+        {
+          "id": "blk-003",
+          "date": "2026-06-09",
+          "startTime": "15:00",
+          "endTime": "16:00",
+          "status": "planned",
+          "order": 2,
+          "subtasks": []
+        }
+      ]
+    },
+    {
+      "slug": "departmental-dashboards",
+      "title": "Departmental Data Dashboards",
+      "description": "Clean up source discrepancies in the Argos to dashboard pipeline.",
+      "status": "active",
+      "lastTouched": "2026-06-02",
+      "blocks": [
+        {
+          "id": "blk-004",
+          "date": "2026-06-02",
+          "startTime": "10:00",
+          "endTime": "11:30",
+          "status": "complete",
+          "order": 0,
+          "subtasks": [
+            { "id": "sub-005", "title": "Build metric-to-source crosswalk", "done": true }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "summer-reading",
+      "title": "Summer Reading List",
+      "description": "Personal backlog. On hold until the fall term ramps down.",
+      "status": "paused",
+      "lastTouched": "2026-05-20",
+      "blocks": []
+    }
+  ]
+}

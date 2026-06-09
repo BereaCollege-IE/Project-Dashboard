@@ -1,0 +1,118 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://example.com/projects.schema.json",
+  "title": "ProjectsData",
+  "description": "Source of truth for the project dashboard. Stored as JSON in GitHub.",
+  "type": "object",
+  "required": ["projects"],
+  "additionalProperties": false,
+  "properties": {
+    "projects": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/project" }
+    }
+  },
+  "definitions": {
+    "project": {
+      "type": "object",
+      "required": [
+        "slug",
+        "title",
+        "description",
+        "status",
+        "lastTouched",
+        "blocks"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "slug": {
+          "type": "string",
+          "description": "Stable id, lowercase with hyphens.",
+          "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+        },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "status": {
+          "type": "string",
+          "enum": ["active", "paused", "complete"]
+        },
+        "lastTouched": {
+          "type": "string",
+          "description": "ISO date, updated whenever the project changes.",
+          "format": "date"
+        },
+        "dueDate": {
+          "type": "string",
+          "description": "Optional project-level deadline. Free text: ISO YYYY-MM-DD for an exact day, or a phrase like 'Summer 2026' or 'September 14-17, 2026'."
+        },
+        "tasks": {
+          "type": "array",
+          "description": "Project backlog: tasks not yet scheduled into a time block.",
+          "items": { "$ref": "#/definitions/subtask" }
+        },
+        "blocks": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/timeBlock" }
+        }
+      }
+    },
+    "timeBlock": {
+      "type": "object",
+      "required": [
+        "id",
+        "date",
+        "startTime",
+        "endTime",
+        "status",
+        "order",
+        "subtasks"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string" },
+        "date": {
+          "type": "string",
+          "description": "Calendar day, YYYY-MM-DD.",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "startTime": {
+          "type": "string",
+          "description": "24 hour HH:MM.",
+          "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$"
+        },
+        "endTime": {
+          "type": "string",
+          "description": "24 hour HH:MM.",
+          "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["planned", "in_progress", "complete"]
+        },
+        "order": {
+          "type": "integer",
+          "description": "Position within the day, used for drag reordering.",
+          "minimum": 0
+        },
+        "subtasks": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/subtask" }
+        }
+      }
+    },
+    "subtask": {
+      "type": "object",
+      "required": ["id", "title", "done"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "done": { "type": "boolean" },
+        "dueDate": {
+          "type": "string",
+          "description": "Optional deadline. Free text: ISO YYYY-MM-DD for an exact day, or a phrase like 'now through August 1, 2026'."
+        }
+      }
+    }
+  }
+}
