@@ -49,8 +49,9 @@
             {
               "id": "cop-framework-t1",
               "title": "Revise framework with additional resources/material added to OneDrive folder",
-              "done": false,
-              "dueDate": "2026-06-15"
+              "done": true,
+              "dueDate": "2026-06-15",
+              "completedAt": "2026-06-09"
             }
           ]
         }
