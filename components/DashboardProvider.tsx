@@ -19,6 +19,7 @@ import {
 } from "react";
 import type {
   ProjectsData,
+  Project,
   TimeBlock,
   Subtask,
   BlockStatus,
@@ -49,12 +50,14 @@ interface DashboardActions {
   deleteBlock: (blockId: string) => void;
   cycleStatus: (blockId: string) => void;
   reorderToday: (orderedIds: string[]) => void;
-  addSubtask: (blockId: string, title: string) => void;
+  addSubtask: (blockId: string, title: string, dueDate?: string) => void;
   toggleSubtask: (blockId: string, subtaskId: string) => void;
   deleteSubtask: (blockId: string, subtaskId: string) => void;
+  // Move a scheduled block back out of Today, returning its tasks to the backlog
+  unscheduleBlock: (blockId: string) => void;
   bumpProject: (slug: string) => void;
   // Backlog (project-level task list)
-  addBacklogTask: (slug: string, title: string) => void;
+  addBacklogTask: (slug: string, title: string, dueDate?: string) => void;
   toggleBacklogTask: (slug: string, taskId: string) => void;
   deleteBacklogTask: (slug: string, taskId: string) => void;
   scheduleTask: (
@@ -63,6 +66,8 @@ interface DashboardActions {
     startTime?: string,
     endTime?: string
   ) => void;
+  // Create a brand-new project
+  addProject: (title: string, dueDate?: string) => void;
 }
 
 interface DashboardContextValue {
@@ -86,6 +91,27 @@ export function useDashboard(): DashboardContextValue {
 // Generate a unique id. Available in modern browsers; this only runs client-side.
 function newId(prefix: string): string {
   return `${prefix}-${crypto.randomUUID()}`;
+}
+
+// Turn a project title into a url-safe slug. Falls back to "project" if the
+// title has no usable characters.
+function slugify(title: string): string {
+  const base = title
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+  return base || "project";
+}
+
+// Pick a slug not already used by another project, appending -2, -3, etc.
+function uniqueSlug(title: string, existing: ProjectsData): string {
+  const taken = new Set(existing.projects.map((p) => p.slug));
+  const base = slugify(title);
+  let slug = base;
+  let n = 2;
+  while (taken.has(slug)) slug = `${base}-${n++}`;
+  return slug;
 }
 
 interface DashboardProviderProps {
@@ -214,12 +240,13 @@ export default function DashboardProvider({
         mutate.reorderBlocksForDay(dataRef.current, today, orderedIds, today)
       );
     },
-    addSubtask: (blockId, title) => {
+    addSubtask: (blockId, title, dueDate) => {
       if (!today || !title.trim()) return;
       const subtask: Subtask = {
         id: newId("sub"),
         title: title.trim(),
         done: false,
+        ...(dueDate?.trim() ? { dueDate: dueDate.trim() } : {}),
       };
       apply(mutate.addSubtask(dataRef.current, blockId, subtask, today));
     },
@@ -230,6 +257,10 @@ export default function DashboardProvider({
     deleteSubtask: (blockId, subtaskId) => {
       if (!today) return;
       apply(mutate.deleteSubtask(dataRef.current, blockId, subtaskId, today));
+    },
+    unscheduleBlock: (blockId) => {
+      if (!today) return;
+      apply(mutate.unscheduleBlock(dataRef.current, blockId, today));
     },
     bumpProject: (slug) => {
       if (!today) return;
@@ -244,12 +275,13 @@ export default function DashboardProvider({
       };
       apply(mutate.bumpProjectToToday(dataRef.current, slug, block, today));
     },
-    addBacklogTask: (slug, title) => {
+    addBacklogTask: (slug, title, dueDate) => {
       if (!today || !title.trim()) return;
       const task: Subtask = {
         id: newId("task"),
         title: title.trim(),
         done: false,
+        ...(dueDate?.trim() ? { dueDate: dueDate.trim() } : {}),
       };
       apply(mutate.addBacklogTask(dataRef.current, slug, task, today));
     },
@@ -273,6 +305,20 @@ export default function DashboardProvider({
         subtasks: [], // the task is moved in by the mutation
       };
       apply(mutate.scheduleTaskToday(dataRef.current, slug, taskId, block, today));
+    },
+    addProject: (title, dueDate) => {
+      if (!today || !title.trim()) return;
+      const project: Project = {
+        slug: uniqueSlug(title, dataRef.current),
+        title: title.trim(),
+        description: "",
+        status: "active",
+        lastTouched: today,
+        ...(dueDate?.trim() ? { dueDate: dueDate.trim() } : {}),
+        tasks: [],
+        blocks: [],
+      };
+      apply(mutate.addProject(dataRef.current, project));
     },
   };
 

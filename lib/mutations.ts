@@ -281,3 +281,36 @@ export function scheduleTaskToday(
     ),
   };
 }
+
+// Reverse of scheduling: remove a block from the schedule and return its
+// subtasks to the owning project's backlog. An empty block is simply removed.
+// The project is touched. No-op if the block is not found.
+export function unscheduleBlock(
+  data: ProjectsData,
+  blockId: string,
+  today: string
+): ProjectsData {
+  return {
+    projects: data.projects.map((p) => {
+      const block = p.blocks.find((b) => b.id === blockId);
+      if (!block) return p;
+      return {
+        ...p,
+        tasks: [...(p.tasks ?? []), ...block.subtasks],
+        blocks: p.blocks.filter((b) => b.id !== blockId),
+        lastTouched: today,
+      };
+    }),
+  };
+}
+
+// --- Projects ---
+
+// Append a brand-new project. The caller supplies the fully-formed project
+// (with a unique slug already chosen).
+export function addProject(
+  data: ProjectsData,
+  project: Project
+): ProjectsData {
+  return { projects: [...data.projects, project] };
+}

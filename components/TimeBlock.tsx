@@ -1,12 +1,12 @@
 "use client";
 
 // A single time block: a drag handle, its time range (inline-editable), project,
-// status (click to cycle), a delete control, and an inline subtask checklist.
-// Reads its actions from the dashboard context.
+// status (click to cycle), controls to move it back to the backlog or delete it,
+// and an inline subtask checklist. Reads its actions from the dashboard context.
 
 import { useState } from "react";
 import { useDashboard } from "./DashboardProvider";
-import { blockProgress } from "@/lib/data";
+import { blockProgress, formatDueDate, isOverdue } from "@/lib/data";
 import type { ScheduledBlock, BlockStatus, Subtask } from "@/lib/types";
 
 interface TimeBlockProps {
@@ -29,9 +29,10 @@ const STATUS_STYLES: Record<BlockStatus, string> = {
 };
 
 export default function TimeBlock({ block, dragHandleProps }: TimeBlockProps) {
-  const { actions } = useDashboard();
+  const { today, actions } = useDashboard();
   const { done, total } = blockProgress(block);
   const [newSubtask, setNewSubtask] = useState("");
+  const [newSubtaskDue, setNewSubtaskDue] = useState("");
 
   return (
     <article className="rounded-lg border border-gray-200 bg-white p-4">
@@ -78,6 +79,15 @@ export default function TimeBlock({ block, dragHandleProps }: TimeBlockProps) {
           >
             {STATUS_LABELS[block.status]}
           </button>
+          {/* Move back out of Today: returns the task(s) to the backlog. */}
+          <button
+            type="button"
+            onClick={() => actions.unscheduleBlock(block.id)}
+            className="rounded border border-gray-300 px-2 py-0.5 text-xs"
+            title="Move this block back to the project backlog"
+          >
+            Move to backlog
+          </button>
           <button
             type="button"
             onClick={() => actions.deleteBlock(block.id)}
@@ -95,35 +105,50 @@ export default function TimeBlock({ block, dragHandleProps }: TimeBlockProps) {
 
         {block.subtasks.length > 0 && (
           <ul className="mt-2 space-y-1">
-            {block.subtasks.map((subtask: Subtask) => (
-              <li key={subtask.id} className="flex items-center gap-2 text-sm">
-                <input
-                  type="checkbox"
-                  checked={subtask.done}
-                  onChange={() => actions.toggleSubtask(block.id, subtask.id)}
-                />
-                <span className={subtask.done ? "text-gray-400 line-through" : ""}>
-                  {subtask.title}
-                </span>
-                <button
-                  type="button"
-                  onClick={() => actions.deleteSubtask(block.id, subtask.id)}
-                  className="ml-auto text-xs text-gray-400 underline"
-                >
-                  Delete
-                </button>
-              </li>
-            ))}
+            {block.subtasks.map((subtask: Subtask) => {
+              const overdue = isOverdue(subtask.dueDate, today ?? "", subtask.done);
+              return (
+                <li key={subtask.id} className="flex items-center gap-2 text-sm">
+                  <input
+                    type="checkbox"
+                    checked={subtask.done}
+                    onChange={() => actions.toggleSubtask(block.id, subtask.id)}
+                  />
+                  <span className={subtask.done ? "text-gray-400 line-through" : ""}>
+                    {subtask.title}
+                  </span>
+                  {subtask.dueDate && (
+                    <span
+                      className={`rounded px-1.5 py-0.5 text-xs ${
+                        overdue
+                          ? "bg-red-100 text-red-700"
+                          : "bg-gray-100 text-gray-500"
+                      }`}
+                    >
+                      {formatDueDate(subtask.dueDate)}
+                    </span>
+                  )}
+                  <button
+                    type="button"
+                    onClick={() => actions.deleteSubtask(block.id, subtask.id)}
+                    className="ml-auto text-xs text-gray-400 underline"
+                  >
+                    Delete
+                  </button>
+                </li>
+              );
+            })}
           </ul>
         )}
 
         <form
           onSubmit={(e) => {
             e.preventDefault();
-            actions.addSubtask(block.id, newSubtask);
+            actions.addSubtask(block.id, newSubtask, newSubtaskDue);
             setNewSubtask("");
+            setNewSubtaskDue("");
           }}
-          className="mt-2 flex gap-2"
+          className="mt-2 flex flex-wrap gap-2"
         >
           <input
             type="text"
@@ -131,6 +156,13 @@ export default function TimeBlock({ block, dragHandleProps }: TimeBlockProps) {
             onChange={(e) => setNewSubtask(e.target.value)}
             placeholder="Add a subtask"
             className="flex-1 rounded border border-gray-200 px-2 py-1 text-sm"
+          />
+          <input
+            type="text"
+            value={newSubtaskDue}
+            onChange={(e) => setNewSubtaskDue(e.target.value)}
+            placeholder='Due (optional): 2026-07-15 or "Summer 2026"'
+            className="w-56 rounded border border-gray-200 px-2 py-1 text-sm"
           />
           <button
             type="submit"
