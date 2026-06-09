@@ -481,5 +481,12 @@
       ],
       "blocks": []
     }
-  ]
+  ],
+  "settings": {
+    "staleAfterDays": 5,
+    "defaultStartTime": "06:00",
+    "defaultBlockMinutes": 60,
+    "assistantModel": "claude-sonnet-4-6",
+    "reminderEmail": "smithro@berea.edu"
+  }
 }
