@@ -1,0 +1,145 @@
+"use client";
+
+// A single time block: a drag handle, its time range (inline-editable), project,
+// status (click to cycle), a delete control, and an inline subtask checklist.
+// Reads its actions from the dashboard context.
+
+import { useState } from "react";
+import { useDashboard } from "./DashboardProvider";
+import { blockProgress } from "@/lib/data";
+import type { ScheduledBlock, BlockStatus, Subtask } from "@/lib/types";
+
+interface TimeBlockProps {
+  block: ScheduledBlock;
+  // Spread onto the drag handle by the sortable wrapper. Optional so the block
+  // can also render outside a drag context.
+  dragHandleProps?: Record<string, unknown>;
+}
+
+// Plain-language labels and a matching tint for each status.
+const STATUS_LABELS: Record<BlockStatus, string> = {
+  planned: "Planned",
+  in_progress: "In progress",
+  complete: "Complete",
+};
+const STATUS_STYLES: Record<BlockStatus, string> = {
+  planned: "bg-gray-100 text-gray-700",
+  in_progress: "bg-blue-100 text-blue-800",
+  complete: "bg-green-100 text-green-800",
+};
+
+export default function TimeBlock({ block, dragHandleProps }: TimeBlockProps) {
+  const { actions } = useDashboard();
+  const { done, total } = blockProgress(block);
+  const [newSubtask, setNewSubtask] = useState("");
+
+  return (
+    <article className="rounded-lg border border-gray-200 bg-white p-4">
+      <header className="flex items-start gap-3">
+        {/* Drag handle. Only this starts a drag. */}
+        <button
+          type="button"
+          aria-label="Drag to reorder"
+          className="mt-1 cursor-grab touch-none text-gray-300 hover:text-gray-500"
+          {...(dragHandleProps as React.ButtonHTMLAttributes<HTMLButtonElement>)}
+        >
+          ⠿
+        </button>
+
+        <div className="flex-1">
+          <p className="text-sm font-medium">{block.projectTitle}</p>
+          <div className="mt-1 flex items-center gap-1 text-xs text-gray-500">
+            <input
+              type="time"
+              value={block.startTime}
+              onChange={(e) =>
+                actions.updateBlock(block.id, { startTime: e.target.value })
+              }
+              className="rounded border border-gray-200 px-1 py-0.5"
+            />
+            <span>to</span>
+            <input
+              type="time"
+              value={block.endTime}
+              onChange={(e) =>
+                actions.updateBlock(block.id, { endTime: e.target.value })
+              }
+              className="rounded border border-gray-200 px-1 py-0.5"
+            />
+          </div>
+        </div>
+
+        <div className="flex items-center gap-2">
+          {/* Click to cycle planned -> in progress -> complete. */}
+          <button
+            type="button"
+            onClick={() => actions.cycleStatus(block.id)}
+            className={`rounded px-2 py-0.5 text-xs ${STATUS_STYLES[block.status]}`}
+          >
+            {STATUS_LABELS[block.status]}
+          </button>
+          <button
+            type="button"
+            onClick={() => actions.deleteBlock(block.id)}
+            className="text-xs text-gray-400 underline"
+          >
+            Delete
+          </button>
+        </div>
+      </header>
+
+      <div className="mt-3">
+        <p className="text-xs font-medium text-gray-600">
+          Subtasks {total > 0 && `(${done}/${total})`}
+        </p>
+
+        {block.subtasks.length > 0 && (
+          <ul className="mt-2 space-y-1">
+            {block.subtasks.map((subtask: Subtask) => (
+              <li key={subtask.id} className="flex items-center gap-2 text-sm">
+                <input
+                  type="checkbox"
+                  checked={subtask.done}
+                  onChange={() => actions.toggleSubtask(block.id, subtask.id)}
+                />
+                <span className={subtask.done ? "text-gray-400 line-through" : ""}>
+                  {subtask.title}
+                </span>
+                <button
+                  type="button"
+                  onClick={() => actions.deleteSubtask(block.id, subtask.id)}
+                  className="ml-auto text-xs text-gray-400 underline"
+                >
+                  Delete
+                </button>
+              </li>
+            ))}
+          </ul>
+        )}
+
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            actions.addSubtask(block.id, newSubtask);
+            setNewSubtask("");
+          }}
+          className="mt-2 flex gap-2"
+        >
+          <input
+            type="text"
+            value={newSubtask}
+            onChange={(e) => setNewSubtask(e.target.value)}
+            placeholder="Add a subtask"
+            className="flex-1 rounded border border-gray-200 px-2 py-1 text-sm"
+          />
+          <button
+            type="submit"
+            className="rounded border border-gray-300 px-2 py-1 text-xs"
+          >
+            Add
+          </button>
+        </form>
+      </div>
+    </article>
+  );
+}
