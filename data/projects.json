@@ -43,7 +43,7 @@
           "date": "2026-06-10",
           "startTime": "06:00",
           "endTime": "07:00",
-          "status": "in_progress",
+          "status": "complete",
           "order": 0,
           "subtasks": [
             {
