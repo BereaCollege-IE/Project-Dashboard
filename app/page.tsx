@@ -39,24 +39,28 @@ export default async function DashboardPage() {
 
   return (
     <DashboardProvider initialData={data} initialSha={sha}>
-      <main className="mx-auto max-w-3xl space-y-10 p-4 sm:p-6">
+      <main className="mx-auto max-w-5xl space-y-10 p-4 sm:p-6">
         {/* Quick-glance summary plus the global toolbar (undo, export, settings). */}
         <GlanceHeader />
 
         {/* The viewed day's time blocks, with day navigation. */}
         <DailySchedule />
 
-        {/* What's coming due across all projects. */}
-        <UpcomingDeadlines />
+        {/* Progress and what's coming due, side by side on wider screens.
+            Stacks back to one column below the lg breakpoint. */}
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
+          {/* Completion progress. */}
+          <StatsSection />
+
+          {/* What's coming due across all projects. */}
+          <UpcomingDeadlines />
+        </div>
 
         {/* Anything active that has gone quiet for a while. */}
         <StaleProjects />
 
         {/* Every project and its tasks, with search, sort, and tags. */}
         <Backlog />
-
-        {/* Completion progress. */}
-        <StatsSection />
       </main>
 
       {/* Floating chat assistant (proposes changes, you confirm). */}
