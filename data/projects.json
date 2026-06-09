@@ -7,15 +7,25 @@
       "status": "active",
       "lastTouched": "2026-06-09",
       "dueDate": "2026-08-14",
-      "tasks": [
+      "tasks": [],
+      "blocks": [
         {
-          "id": "acs-working-group-t1",
-          "title": "Prep ideas and agenda for virtual meeting",
-          "done": false,
-          "dueDate": "2026-05-28"
+          "id": "blk-1342e6ec-79bd-401c-8dba-4d052437b247",
+          "date": "2026-06-09",
+          "startTime": "09:00",
+          "endTime": "10:00",
+          "status": "planned",
+          "order": 0,
+          "subtasks": [
+            {
+              "id": "acs-working-group-t1",
+              "title": "Prep ideas and agenda for virtual meeting",
+              "done": false,
+              "dueDate": "2026-05-28"
+            }
+          ]
         }
-      ],
-      "blocks": []
+      ]
     },
     {
       "slug": "cop-framework",
