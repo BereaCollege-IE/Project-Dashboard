@@ -18,7 +18,8 @@
         {
           "id": "task-1c563004-6f50-41f6-a848-9dbbe61376cd",
           "title": "Prep ideas and agenda for virtual meeting  (due 6/18/26)",
-          "done": false
+          "done": false,
+          "dueDate": "2026-06-16"
         }
       ],
       "blocks": []
