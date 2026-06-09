@@ -13,25 +13,14 @@
           "title": "Prep ideas and agenda for virtual meeting",
           "done": false,
           "dueDate": "2026-06-18"
+        },
+        {
+          "id": "task-1c563004-6f50-41f6-a848-9dbbe61376cd",
+          "title": "Prep ideas and agenda for virtual meeting  (due 6/18/26)",
+          "done": false
         }
       ],
-      "blocks": [
-        {
-          "id": "blk-17fff32d-935d-4ea6-a814-18c904e4f7e5",
-          "date": "2026-06-09",
-          "startTime": "09:00",
-          "endTime": "10:00",
-          "status": "planned",
-          "order": 0,
-          "subtasks": [
-            {
-              "id": "task-1c563004-6f50-41f6-a848-9dbbe61376cd",
-              "title": "Prep ideas and agenda for virtual meeting  (due 6/18/26)",
-              "done": false
-            }
-          ]
-        }
-      ]
+      "blocks": []
     },
     {
       "slug": "cop-framework",
@@ -42,19 +31,31 @@
       "dueDate": "Summer 2026",
       "tasks": [
         {
-          "id": "cop-framework-t1",
-          "title": "Revise framework with additional resources/material added to OneDrive folder",
-          "done": false,
-          "dueDate": "2026-06-15"
-        },
-        {
           "id": "cop-framework-t2",
           "title": "Draft cover letter for sending framework to CoP members for review",
           "done": false,
           "dueDate": "2026-06-15"
         }
       ],
-      "blocks": []
+      "blocks": [
+        {
+          "id": "blk-99126623-bf3e-4c8a-a086-321df80c1fbd",
+          "date": "2026-06-10",
+          "startTime": "06:00",
+          "endTime": "07:00",
+          "status": "complete",
+          "order": 0,
+          "subtasks": [
+            {
+              "id": "cop-framework-t1",
+              "title": "Revise framework with additional resources/material added to OneDrive folder",
+              "done": true,
+              "dueDate": "2026-06-15",
+              "completedAt": "2026-06-09"
+            }
+          ]
+        }
+      ]
     },
     {
       "slug": "summer-internships",
