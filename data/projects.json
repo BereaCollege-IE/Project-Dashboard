@@ -11,15 +11,13 @@
         {
           "id": "acs-working-group-t1",
           "title": "Prep ideas and agenda for virtual meeting",
-          "done": true,
-          "dueDate": "2026-06-18",
-          "completedAt": "2026-06-09"
+          "done": false,
+          "dueDate": "2026-06-18"
         },
         {
           "id": "task-1c563004-6f50-41f6-a848-9dbbe61376cd",
           "title": "Prep ideas and agenda for virtual meeting  (due 6/18/26)",
-          "done": true,
-          "completedAt": "2026-06-09"
+          "done": false
         }
       ],
       "blocks": []
