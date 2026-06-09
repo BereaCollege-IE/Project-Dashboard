@@ -21,7 +21,7 @@
           "date": "2026-06-09",
           "startTime": "09:00",
           "endTime": "10:00",
-          "status": "in_progress",
+          "status": "planned",
           "order": 0,
           "subtasks": [
             {
