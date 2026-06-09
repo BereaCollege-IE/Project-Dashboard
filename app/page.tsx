@@ -7,6 +7,7 @@ import DashboardProvider from "@/components/DashboardProvider";
 import DailySchedule from "@/components/DailySchedule";
 import Backlog from "@/components/Backlog";
 import StaleProjects from "@/components/StaleProjects";
+import Assistant from "@/components/Assistant";
 import { readProjects } from "@/lib/github";
 import type { ProjectsData } from "@/lib/types";
 
@@ -45,6 +46,9 @@ export default async function DashboardPage() {
         {/* Anything active that has gone quiet for a while. */}
         <StaleProjects />
       </main>
+
+      {/* Floating chat assistant (proposes changes, you confirm). */}
+      <Assistant />
     </DashboardProvider>
   );
 }
