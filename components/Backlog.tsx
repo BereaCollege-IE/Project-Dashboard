@@ -54,7 +54,7 @@ export default function Backlog() {
     <section aria-labelledby="backlog-heading" className="space-y-3">
       <div className="flex flex-wrap items-center justify-between gap-2">
         <h2 id="backlog-heading" className="text-lg font-medium">
-          Projects &amp; backlog
+          Projects &amp; tasks
         </h2>
         <button
           type="button"

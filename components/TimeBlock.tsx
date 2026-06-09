@@ -84,9 +84,9 @@ export default function TimeBlock({ block, dragHandleProps }: TimeBlockProps) {
             type="button"
             onClick={() => actions.unscheduleBlock(block.id)}
             className="rounded border border-gray-300 px-2 py-0.5 text-xs"
-            title="Move this block back to the project backlog"
+            title="Move this day back to project tasks"
           >
-            Move to backlog
+            Move to tasks
           </button>
           <button
             type="button"

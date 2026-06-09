@@ -51,7 +51,7 @@ export default function SettingsPanel({ onClose }: { onClose: () => void }) {
           />
         </label>
         <label className="flex flex-col text-xs text-gray-600">
-          Default block start time
+          Default day start time
           <input
             type="time"
             value={defaultStartTime}
@@ -60,7 +60,7 @@ export default function SettingsPanel({ onClose }: { onClose: () => void }) {
           />
         </label>
         <label className="flex flex-col text-xs text-gray-600">
-          Default block length (minutes)
+          Default day length (minutes)
           <input
             type="number"
             min={15}

@@ -98,7 +98,7 @@ export default function DailySchedule() {
           onClick={() => setShowForm((v) => !v)}
           className="rounded bg-gray-900 px-3 py-1 text-sm text-white"
         >
-          {showForm ? "Close" : "Add block"}
+          {showForm ? "Close" : "Add day"}
         </button>
       </div>
 
@@ -119,8 +119,8 @@ export default function DailySchedule() {
 
       {blocks.length === 0 ? (
         <p className="rounded border border-dashed border-gray-300 p-6 text-center text-sm text-gray-500">
-          Nothing scheduled for {label.toLowerCase()}. Add a block, or schedule a
-          task from the backlog or deadlines below.
+          Nothing scheduled for {label.toLowerCase()}. Add a day, or schedule a
+          task from tasks or deadlines below.
         </p>
       ) : (
         <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
@@ -152,7 +152,7 @@ function AddBlockForm({
   if (projects.length === 0) {
     return (
       <p className="rounded border border-gray-200 p-3 text-sm text-gray-500">
-        Add a project first, then you can schedule blocks for it.
+        Add a project first, then you can schedule days for it.
       </p>
     );
   }

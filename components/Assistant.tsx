@@ -18,7 +18,7 @@ import type { ProjectStatus } from "@/lib/types";
 const QUICK_PROMPTS = [
   {
     label: "Plan my day",
-    text: "Plan my day. Based on due dates and what is overdue, propose a short schedule of time blocks for today and which backlog tasks to pull in.",
+    text: "Plan my day. Based on due dates and what is overdue, propose a short schedule of days for today and which tasks to pull in.",
   },
   {
     label: "Prioritize",
