@@ -14,6 +14,22 @@ import {
 } from "@/lib/assistant";
 import type { ProjectStatus } from "@/lib/types";
 
+// One-tap starter prompts for the common task-management asks.
+const QUICK_PROMPTS = [
+  {
+    label: "Plan my day",
+    text: "Plan my day. Based on due dates and what is overdue, propose a short schedule of time blocks for today and which backlog tasks to pull in.",
+  },
+  {
+    label: "Prioritize",
+    text: "What should I prioritize this week, considering due dates, overdue items, and task priorities?",
+  },
+  {
+    label: "Find overlaps",
+    text: "Scan my tasks across projects for overlap or work that could be batched together, and suggest how.",
+  },
+];
+
 // A chat turn plus, for assistant turns, the proposed actions and their state.
 interface Message extends ChatTurn {
   actions?: ProposedAction[];
@@ -36,8 +52,8 @@ export default function Assistant() {
     });
   }
 
-  async function send() {
-    const text = input.trim();
+  async function send(explicit?: string) {
+    const text = (explicit ?? input).trim();
     if (!text || loading) return;
     setInput("");
     setError(null);
@@ -250,12 +266,26 @@ export default function Assistant() {
         )}
       </div>
 
+      <div className="flex flex-wrap gap-1 border-t border-gray-200 px-2 pt-2">
+        {QUICK_PROMPTS.map((qp) => (
+          <button
+            key={qp.label}
+            type="button"
+            onClick={() => void send(qp.text)}
+            disabled={loading}
+            className="rounded-full border border-gray-300 px-2 py-0.5 text-[11px] text-gray-600 disabled:opacity-50"
+          >
+            {qp.label}
+          </button>
+        ))}
+      </div>
+
       <form
         onSubmit={(e) => {
           e.preventDefault();
           void send();
         }}
-        className="flex gap-2 border-t border-gray-200 p-2"
+        className="flex gap-2 p-2"
       >
         <input
           type="text"

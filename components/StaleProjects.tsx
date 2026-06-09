@@ -6,10 +6,10 @@
 // the dashboard context; computes the stale list on the client.
 
 import { useDashboard } from "./DashboardProvider";
-import { daysBetween, getStaleProjects, STALE_AFTER_DAYS } from "@/lib/data";
+import { daysBetween, getStaleProjects } from "@/lib/data";
 
 export default function StaleProjects() {
-  const { data, today, actions } = useDashboard();
+  const { data, today, settings, actions } = useDashboard();
 
   if (!today) {
     return (
@@ -20,7 +20,7 @@ export default function StaleProjects() {
     );
   }
 
-  const projects = getStaleProjects(data, today);
+  const projects = getStaleProjects(data, today, settings.staleAfterDays);
 
   return (
     <section aria-labelledby="stale-heading" className="space-y-3">
@@ -31,7 +31,7 @@ export default function StaleProjects() {
       {projects.length === 0 ? (
         <p className="text-sm text-gray-500">
           Nothing has gone quiet. Every active project has been touched in the
-          last {STALE_AFTER_DAYS} days.
+          last {settings.staleAfterDays} days.
         </p>
       ) : (
         <ul className="space-y-2">

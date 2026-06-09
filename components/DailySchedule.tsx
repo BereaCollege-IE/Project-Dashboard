@@ -1,9 +1,8 @@
 "use client";
 
-// Primary daily view: today's time blocks, drag-sortable, plus a small form to
-// add a new block to an existing project. Reads the working copy and actions
-// from the dashboard context; computes today's blocks from the full document
-// using the client-resolved local day.
+// Daily view: the time blocks for the currently viewed day, drag-sortable, plus
+// a form to add a block. Day navigation lets you review past days and plan
+// future ones. Reads the working copy and actions from the dashboard context.
 
 import { useState } from "react";
 import {
@@ -23,30 +22,29 @@ import {
 } from "@dnd-kit/sortable";
 import SortableTimeBlock from "./SortableTimeBlock";
 import { useDashboard } from "./DashboardProvider";
-import { getBlocksForDay } from "@/lib/data";
+import { getBlocksForDay, dayLabel } from "@/lib/data";
 
 export default function DailySchedule() {
-  const { data, today, saving, error, actions } = useDashboard();
+  const { data, today, viewedDay, error, actions } = useDashboard();
   const [showForm, setShowForm] = useState(false);
 
-  // Drag sensors: pointer for mouse/touch, keyboard for accessibility.
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
     useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
   );
 
-  // Until the client has resolved the local day, hold off on rendering blocks.
-  if (!today) {
+  if (!today || !viewedDay) {
     return (
       <section className="space-y-3">
-        <h2 className="text-lg font-medium">Today</h2>
+        <h2 className="text-lg font-medium">Schedule</h2>
         <p className="text-sm text-gray-400">Loading your schedule…</p>
       </section>
     );
   }
 
-  const blocks = getBlocksForDay(data, today);
+  const blocks = getBlocksForDay(data, viewedDay);
   const blockIds = blocks.map((b) => b.id);
+  const label = dayLabel(viewedDay, today);
 
   function handleDragEnd(event: DragEndEvent): void {
     const { active, over } = event;
@@ -59,23 +57,49 @@ export default function DailySchedule() {
 
   return (
     <section aria-labelledby="schedule-heading" className="space-y-3">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-wrap items-center justify-between gap-2">
         <div>
           <h2 id="schedule-heading" className="text-lg font-medium">
-            Today
+            Schedule
           </h2>
-          <p className="text-sm text-gray-500">{today}</p>
+          <div className="mt-1 flex items-center gap-2 text-sm text-gray-500">
+            <button
+              type="button"
+              onClick={() => actions.goToDay(-1)}
+              aria-label="Previous day"
+              className="rounded border border-gray-300 px-2 leading-none"
+            >
+              ‹
+            </button>
+            <span className="min-w-[8rem] text-center">
+              {label} <span className="text-gray-400">· {viewedDay}</span>
+            </span>
+            <button
+              type="button"
+              onClick={() => actions.goToDay(1)}
+              aria-label="Next day"
+              className="rounded border border-gray-300 px-2 leading-none"
+            >
+              ›
+            </button>
+            {viewedDay !== today && (
+              <button
+                type="button"
+                onClick={actions.goToToday}
+                className="rounded border border-gray-300 px-2 py-0.5 text-xs"
+              >
+                Today
+              </button>
+            )}
+          </div>
         </div>
-        <div className="flex items-center gap-3">
-          {saving && <span className="text-xs text-gray-400">Saving…</span>}
-          <button
-            type="button"
-            onClick={() => setShowForm((v) => !v)}
-            className="rounded bg-gray-900 px-3 py-1 text-sm text-white"
-          >
-            {showForm ? "Close" : "Add block"}
-          </button>
-        </div>
+        <button
+          type="button"
+          onClick={() => setShowForm((v) => !v)}
+          className="rounded bg-gray-900 px-3 py-1 text-sm text-white"
+        >
+          {showForm ? "Close" : "Add block"}
+        </button>
       </div>
 
       {error && (
@@ -95,14 +119,11 @@ export default function DailySchedule() {
 
       {blocks.length === 0 ? (
         <p className="rounded border border-dashed border-gray-300 p-6 text-center text-sm text-gray-500">
-          Nothing scheduled for today yet. Add a block to get started.
+          Nothing scheduled for {label.toLowerCase()}. Add a block, or schedule a
+          task from the backlog or deadlines below.
         </p>
       ) : (
-        <DndContext
-          sensors={sensors}
-          collisionDetection={closestCenter}
-          onDragEnd={handleDragEnd}
-        >
+        <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
           <SortableContext items={blockIds} strategy={verticalListSortingStrategy}>
             <ol className="space-y-3">
               {blocks.map((block) => (
@@ -122,16 +143,16 @@ function AddBlockForm({
 }: {
   onAdd: (slug: string, start: string, end: string) => void;
 }) {
-  const { data } = useDashboard();
+  const { data, settings } = useDashboard();
   const projects = data.projects.filter((p) => p.status !== "complete");
   const [slug, setSlug] = useState(projects[0]?.slug ?? "");
-  const [start, setStart] = useState("09:00");
+  const [start, setStart] = useState(settings.defaultStartTime);
   const [end, setEnd] = useState("10:00");
 
   if (projects.length === 0) {
     return (
       <p className="rounded border border-gray-200 p-3 text-sm text-gray-500">
-        Add a project to the data file first, then you can schedule blocks for it.
+        Add a project first, then you can schedule blocks for it.
       </p>
     );
   }
@@ -176,10 +197,7 @@ function AddBlockForm({
           className="mt-1 rounded border border-gray-300 px-2 py-1 text-sm"
         />
       </label>
-      <button
-        type="submit"
-        className="rounded bg-gray-900 px-3 py-1 text-sm text-white"
-      >
+      <button type="submit" className="rounded bg-gray-900 px-3 py-1 text-sm text-white">
         Add
       </button>
     </form>

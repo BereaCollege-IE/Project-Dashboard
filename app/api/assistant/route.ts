@@ -49,10 +49,12 @@ export async function POST(request: Request) {
 
   const client = new Anthropic();
   const system = buildSystemPrompt(body.data, body.today || "an unknown date");
+  // Prefer the model chosen in settings, then the env override, then the default.
+  const model = body.data.settings?.assistantModel || MODEL;
 
   try {
     const response = await client.messages.create({
-      model: MODEL,
+      model,
       max_tokens: 2048,
       system,
       tools: ASSISTANT_TOOLS as Anthropic.Tool[],
@@ -81,7 +83,7 @@ export async function POST(request: Request) {
         input_tokens: response.usage.input_tokens,
         output_tokens: response.usage.output_tokens,
       },
-      model: MODEL,
+      model,
     });
   } catch (err) {
     const message = err instanceof Error ? err.message : "Unknown error";

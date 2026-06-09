@@ -12,6 +12,7 @@ import type {
   TimeBlock,
   Subtask,
   BlockStatus,
+  Settings,
 } from "./types";
 
 // Replace the one project that owns `blockId`, leaving the rest untouched.
@@ -157,7 +158,9 @@ export function toggleSubtask(
     ...mapBlock(p, blockId, (b) => ({
       ...b,
       subtasks: b.subtasks.map((s) =>
-        s.id === subtaskId ? { ...s, done: !s.done } : s
+        s.id === subtaskId
+          ? { ...s, done: !s.done, completedAt: !s.done ? today : undefined }
+          : s
       ),
     })),
     lastTouched: today,
@@ -209,7 +212,8 @@ export function addBacklogTask(
   };
 }
 
-// Flip the done flag on a backlog task.
+// Flip the done flag on a backlog task. Stamps completedAt when marking done,
+// clears it when un-completing (used for "completed this week" stats).
 export function toggleBacklogTask(
   data: ProjectsData,
   slug: string,
@@ -222,7 +226,9 @@ export function toggleBacklogTask(
         ? {
             ...p,
             tasks: (p.tasks ?? []).map((t) =>
-              t.id === taskId ? { ...t, done: !t.done } : t
+              t.id === taskId
+                ? { ...t, done: !t.done, completedAt: !t.done ? today : undefined }
+                : t
             ),
             lastTouched: today,
           }
@@ -320,7 +326,7 @@ export function addProject(
 export function updateProject(
   data: ProjectsData,
   slug: string,
-  patch: Partial<Pick<Project, "title" | "description" | "dueDate" | "status">>,
+  patch: Partial<Pick<Project, "title" | "description" | "dueDate" | "status" | "tags">>,
   today: string
 ): ProjectsData {
   return {
@@ -330,14 +336,22 @@ export function updateProject(
   };
 }
 
+// Merge a patch into the user settings.
+export function updateSettings(
+  data: ProjectsData,
+  patch: Partial<Settings>
+): ProjectsData {
+  return { ...data, settings: { ...(data.settings ?? {}), ...patch } };
+}
+
 // --- Editing tasks ---
 
-// Update a backlog task's title and/or due date.
+// Update a backlog task's title, due date, priority, and/or recurrence.
 export function updateBacklogTask(
   data: ProjectsData,
   slug: string,
   taskId: string,
-  patch: Partial<Pick<Subtask, "title" | "dueDate">>,
+  patch: Partial<Pick<Subtask, "title" | "dueDate" | "priority" | "recurrence">>,
   today: string
 ): ProjectsData {
   return {

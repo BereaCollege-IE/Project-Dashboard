@@ -10,6 +10,17 @@
     "projects": {
       "type": "array",
       "items": { "$ref": "#/definitions/project" }
+    },
+    "settings": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "staleAfterDays": { "type": "integer", "minimum": 1 },
+        "defaultStartTime": { "type": "string", "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$" },
+        "defaultBlockMinutes": { "type": "integer", "minimum": 5 },
+        "assistantModel": { "type": "string" },
+        "reminderEmail": { "type": "string" }
+      }
     }
   },
   "definitions": {
@@ -44,6 +55,11 @@
         "dueDate": {
           "type": "string",
           "description": "Optional project-level deadline. Free text: ISO YYYY-MM-DD for an exact day, or a phrase like 'Summer 2026' or 'September 14-17, 2026'."
+        },
+        "tags": {
+          "type": "array",
+          "description": "Optional cross-cutting labels.",
+          "items": { "type": "string" }
         },
         "tasks": {
           "type": "array",
@@ -111,6 +127,13 @@
         "dueDate": {
           "type": "string",
           "description": "Optional deadline. Free text: ISO YYYY-MM-DD for an exact day, or a phrase like 'now through August 1, 2026'."
+        },
+        "priority": { "type": "string", "enum": ["high", "medium", "low"] },
+        "recurrence": { "type": "string", "enum": ["weekly", "monthly"] },
+        "completedAt": {
+          "type": "string",
+          "description": "ISO day the task was last marked done.",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
         }
       }
     }

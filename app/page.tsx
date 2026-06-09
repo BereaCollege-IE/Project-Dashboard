@@ -1,12 +1,15 @@
-// The daily dashboard. This is a server component: it reads the full projects
-// document from GitHub on the server, then hands it to the client provider that
-// owns the live working copy and persistence. The views compute "today" and the
-// stale list on the client so they reflect the user's local day, not UTC.
+// The dashboard. A server component reads the full projects document from
+// GitHub, then hands it to the client provider that owns the live working copy.
+// The views compute "today", the viewed day, and stale/upcoming on the client so
+// they reflect the user's local day, not UTC.
 
 import DashboardProvider from "@/components/DashboardProvider";
+import GlanceHeader from "@/components/GlanceHeader";
 import DailySchedule from "@/components/DailySchedule";
-import Backlog from "@/components/Backlog";
+import UpcomingDeadlines from "@/components/UpcomingDeadlines";
 import StaleProjects from "@/components/StaleProjects";
+import Backlog from "@/components/Backlog";
+import StatsSection from "@/components/StatsSection";
 import Assistant from "@/components/Assistant";
 import { readProjects } from "@/lib/github";
 import type { ProjectsData } from "@/lib/types";
@@ -36,15 +39,24 @@ export default async function DashboardPage() {
 
   return (
     <DashboardProvider initialData={data} initialSha={sha}>
-      <main className="mx-auto max-w-3xl space-y-10 p-6">
-        {/* Primary view: today's time blocks with their subtasks. */}
+      <main className="mx-auto max-w-3xl space-y-10 p-4 sm:p-6">
+        {/* Quick-glance summary plus the global toolbar (undo, export, settings). */}
+        <GlanceHeader />
+
+        {/* The viewed day's time blocks, with day navigation. */}
         <DailySchedule />
 
-        {/* Every project and its unscheduled tasks. */}
-        <Backlog />
+        {/* What's coming due across all projects. */}
+        <UpcomingDeadlines />
 
         {/* Anything active that has gone quiet for a while. */}
         <StaleProjects />
+
+        {/* Every project and its tasks, with search, sort, and tags. */}
+        <Backlog />
+
+        {/* Completion progress. */}
+        <StatsSection />
       </main>
 
       {/* Floating chat assistant (proposes changes, you confirm). */}

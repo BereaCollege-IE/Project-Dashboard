@@ -1,13 +1,13 @@
 "use client";
 
 // Holds the live working copy of the projects data on the client and exposes
-// mutation actions to the views. Edits apply optimistically (UI updates at once)
-// and are persisted to GitHub through /api/projects on a short debounce so a
-// burst of edits collapses into one commit instead of one commit per keystroke.
+// mutation actions to the views. Edits apply optimistically and persist to
+// GitHub on a short debounce. Also owns the viewed day (for planning other
+// days), a multi-level undo stack, and the user settings.
 //
-// "today" is computed on the client after mount, on purpose: the server runs in
-// UTC on Vercel, so the user's local day is the source of truth for what counts
-// as today and what counts as stale.
+// "today" and the viewed day are resolved on the client after mount, on purpose:
+// the server runs in UTC on Vercel, so the user's local day is the source of
+// truth for what counts as today and what counts as stale.
 
 import {
   createContext,
@@ -24,8 +24,18 @@ import type {
   Subtask,
   BlockStatus,
   ProjectStatus,
+  Priority,
+  Recurrence,
+  Settings,
 } from "@/lib/types";
-import { todayISO } from "@/lib/data";
+import {
+  todayISO,
+  addDays,
+  addMinutesToTime,
+  advanceDueDate,
+  isISODate,
+  getSettings,
+} from "@/lib/data";
 import * as mutate from "@/lib/mutations";
 
 // How long to wait after the last edit before committing to GitHub.
@@ -38,11 +48,13 @@ const NEXT_STATUS: Record<BlockStatus, BlockStatus> = {
   complete: "planned",
 };
 
-// Default span for a freshly created block.
-const DEFAULT_START = "09:00";
-const DEFAULT_END = "10:00";
+interface TaskOptions {
+  priority?: Priority;
+  recurrence?: Recurrence;
+}
 
 interface DashboardActions {
+  // Schedule (operates on the currently viewed day)
   addBlock: (slug: string, startTime?: string, endTime?: string) => void;
   updateBlock: (
     blockId: string,
@@ -59,17 +71,21 @@ interface DashboardActions {
     subtaskId: string,
     patch: { title?: string; dueDate?: string }
   ) => void;
-  // Move a scheduled block back out of Today, returning its tasks to the backlog
   unscheduleBlock: (blockId: string) => void;
   bumpProject: (slug: string) => void;
-  // Backlog (project-level task list)
-  addBacklogTask: (slug: string, title: string, dueDate?: string) => void;
+  // Backlog
+  addBacklogTask: (
+    slug: string,
+    title: string,
+    dueDate?: string,
+    opts?: TaskOptions
+  ) => void;
   toggleBacklogTask: (slug: string, taskId: string) => void;
   deleteBacklogTask: (slug: string, taskId: string) => void;
   updateBacklogTask: (
     slug: string,
     taskId: string,
-    patch: { title?: string; dueDate?: string }
+    patch: { title?: string; dueDate?: string; priority?: Priority; recurrence?: Recurrence }
   ) => void;
   scheduleTask: (
     slug: string,
@@ -86,15 +102,25 @@ interface DashboardActions {
       description?: string;
       dueDate?: string;
       status?: ProjectStatus;
+      tags?: string[];
     }
   ) => void;
+  // Day navigation
+  goToDay: (delta: number) => void;
+  goToToday: () => void;
+  // Undo + settings
+  undo: () => void;
+  updateSettings: (patch: Partial<Settings>) => void;
 }
 
 interface DashboardContextValue {
   data: ProjectsData;
-  today: string | null; // null until mounted on the client
+  today: string | null;
+  viewedDay: string | null;
+  settings: ReturnType<typeof getSettings>;
   saving: boolean;
   error: string | null;
+  canUndo: boolean;
   actions: DashboardActions;
 }
 
@@ -102,19 +128,14 @@ const DashboardContext = createContext<DashboardContextValue | null>(null);
 
 export function useDashboard(): DashboardContextValue {
   const ctx = useContext(DashboardContext);
-  if (!ctx) {
-    throw new Error("useDashboard must be used inside a DashboardProvider.");
-  }
+  if (!ctx) throw new Error("useDashboard must be used inside a DashboardProvider.");
   return ctx;
 }
 
-// Generate a unique id. Available in modern browsers; this only runs client-side.
 function newId(prefix: string): string {
   return `${prefix}-${crypto.randomUUID()}`;
 }
 
-// Turn a project title into a url-safe slug. Falls back to "project" if the
-// title has no usable characters.
 function slugify(title: string): string {
   const base = title
     .toLowerCase()
@@ -124,7 +145,6 @@ function slugify(title: string): string {
   return base || "project";
 }
 
-// Pick a slug not already used by another project, appending -2, -3, etc.
 function uniqueSlug(title: string, existing: ProjectsData): string {
   const taken = new Set(existing.projects.map((p) => p.slug));
   const base = slugify(title);
@@ -147,21 +167,24 @@ export default function DashboardProvider({
 }: DashboardProviderProps) {
   const [data, setData] = useState<ProjectsData>(initialData);
   const [today, setToday] = useState<string | null>(null);
+  const [viewedDay, setViewedDay] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [undoDepth, setUndoDepth] = useState(0);
 
-  // Refs hold the latest values for the debounced save, which closes over them.
   const dataRef = useRef(data);
   const shaRef = useRef(initialSha);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const undoRef = useRef<ProjectsData[]>([]);
 
-  // Resolve the local day once we are on the client.
+  const settings = getSettings(data);
+
   useEffect(() => {
-    setToday(todayISO());
+    const t = todayISO();
+    setToday(t);
+    setViewedDay(t);
   }, []);
 
-  // Commit the current working copy to GitHub. Serialized by the debounce, so
-  // only one of these is in flight at a time.
   const save = useCallback(async () => {
     setSaving(true);
     setError(null);
@@ -172,17 +195,13 @@ export default function DashboardProvider({
         body: JSON.stringify({ data: dataRef.current, sha: shaRef.current }),
       });
       if (!res.ok) {
-        const body = (await res.json().catch(() => null)) as
-          | { error?: string }
-          | null;
+        const body = (await res.json().catch(() => null)) as { error?: string } | null;
         throw new Error(body?.error ?? `Save failed (${res.status}).`);
       }
       const json = (await res.json()) as { sha: string };
-      shaRef.current = json.sha; // keep the SHA current for the next write
+      shaRef.current = json.sha;
     } catch (err) {
       const message = err instanceof Error ? err.message : "Unknown error";
-      // We keep the optimistic local state so edits are not lost; the user can
-      // retry with the next change. Surface what went wrong.
       setError(`${message} Your latest change is shown but not yet saved.`);
     } finally {
       setSaving(false);
@@ -196,9 +215,13 @@ export default function DashboardProvider({
     }, SAVE_DEBOUNCE_MS);
   }, [save]);
 
-  // Apply a pure mutation: update both state and the ref, then queue a save.
+  // Apply a pure mutation: snapshot the prior state for undo, update state and
+  // ref, then queue a save.
   const apply = useCallback(
     (next: ProjectsData) => {
+      undoRef.current.push(dataRef.current);
+      if (undoRef.current.length > 25) undoRef.current.shift();
+      setUndoDepth(undoRef.current.length);
       dataRef.current = next;
       setData(next);
       scheduleSave();
@@ -206,7 +229,15 @@ export default function DashboardProvider({
     [scheduleSave]
   );
 
-  // Flush any pending save on unmount so a quick edit-then-leave still persists.
+  const undo = useCallback(() => {
+    const prev = undoRef.current.pop();
+    if (!prev) return;
+    setUndoDepth(undoRef.current.length);
+    dataRef.current = prev;
+    setData(prev);
+    scheduleSave();
+  }, [scheduleSave]);
+
   useEffect(() => {
     return () => {
       if (timerRef.current) {
@@ -216,20 +247,24 @@ export default function DashboardProvider({
     };
   }, [save]);
 
-  // Build the actions. Each guards on `today` being resolved first.
+  const day = viewedDay ?? today;
+  const cfg = getSettings(dataRef.current);
+  const defaultStart = cfg.defaultStartTime;
+  const defaultEnd = addMinutesToTime(defaultStart, cfg.defaultBlockMinutes);
+
   const actions: DashboardActions = {
-    addBlock: (slug, startTime = DEFAULT_START, endTime = DEFAULT_END) => {
-      if (!today) return;
+    addBlock: (slug, startTime = defaultStart, endTime = defaultEnd) => {
+      if (!day) return;
       const block: TimeBlock = {
         id: newId("blk"),
-        date: today,
+        date: day,
         startTime,
         endTime,
         status: "planned",
-        order: 0, // assigned by the mutation
+        order: 0,
         subtasks: [],
       };
-      apply(mutate.addBlock(dataRef.current, slug, block, today));
+      apply(mutate.addBlock(dataRef.current, slug, block, today!));
     },
     updateBlock: (blockId, patch) => {
       if (!today) return;
@@ -245,20 +280,11 @@ export default function DashboardProvider({
         .flatMap((p) => p.blocks)
         .find((b) => b.id === blockId);
       if (!current) return;
-      apply(
-        mutate.setBlockStatus(
-          dataRef.current,
-          blockId,
-          NEXT_STATUS[current.status],
-          today
-        )
-      );
+      apply(mutate.setBlockStatus(dataRef.current, blockId, NEXT_STATUS[current.status], today));
     },
     reorderToday: (orderedIds) => {
-      if (!today) return;
-      apply(
-        mutate.reorderBlocksForDay(dataRef.current, today, orderedIds, today)
-      );
+      if (!day) return;
+      apply(mutate.reorderBlocksForDay(dataRef.current, day, orderedIds, today!));
     },
     addSubtask: (blockId, title, dueDate) => {
       if (!today || !title.trim()) return;
@@ -284,7 +310,7 @@ export default function DashboardProvider({
       if (next.dueDate !== undefined) next.dueDate = next.dueDate.trim() || undefined;
       if (next.title !== undefined) {
         const t = next.title.trim();
-        if (!t) return; // refuse to blank a title
+        if (!t) return;
         next.title = t;
       }
       apply(mutate.updateSubtask(dataRef.current, blockId, subtaskId, next, today));
@@ -298,27 +324,44 @@ export default function DashboardProvider({
       const block: TimeBlock = {
         id: newId("blk"),
         date: today,
-        startTime: DEFAULT_START,
-        endTime: DEFAULT_END,
+        startTime: defaultStart,
+        endTime: defaultEnd,
         status: "planned",
-        order: 0, // assigned by the mutation
+        order: 0,
         subtasks: [],
       };
       apply(mutate.bumpProjectToToday(dataRef.current, slug, block, today));
     },
-    addBacklogTask: (slug, title, dueDate) => {
+    addBacklogTask: (slug, title, dueDate, opts) => {
       if (!today || !title.trim()) return;
       const task: Subtask = {
         id: newId("task"),
         title: title.trim(),
         done: false,
         ...(dueDate?.trim() ? { dueDate: dueDate.trim() } : {}),
+        ...(opts?.priority ? { priority: opts.priority } : {}),
+        ...(opts?.recurrence ? { recurrence: opts.recurrence } : {}),
       };
       apply(mutate.addBacklogTask(dataRef.current, slug, task, today));
     },
     toggleBacklogTask: (slug, taskId) => {
       if (!today) return;
-      apply(mutate.toggleBacklogTask(dataRef.current, slug, taskId, today));
+      const cur = dataRef.current;
+      const task = cur.projects.find((p) => p.slug === slug)?.tasks?.find((t) => t.id === taskId);
+      let next = mutate.toggleBacklogTask(cur, slug, taskId, today);
+      // Completing a recurring, exact-dated task spawns the next occurrence.
+      if (task && !task.done && task.recurrence && isISODate(task.dueDate)) {
+        const nextTask: Subtask = {
+          id: newId("task"),
+          title: task.title,
+          done: false,
+          dueDate: advanceDueDate(task.dueDate!, task.recurrence),
+          ...(task.priority ? { priority: task.priority } : {}),
+          recurrence: task.recurrence,
+        };
+        next = mutate.addBacklogTask(next, slug, nextTask, today);
+      }
+      apply(next);
     },
     deleteBacklogTask: (slug, taskId) => {
       if (!today) return;
@@ -330,23 +373,23 @@ export default function DashboardProvider({
       if (next.dueDate !== undefined) next.dueDate = next.dueDate.trim() || undefined;
       if (next.title !== undefined) {
         const t = next.title.trim();
-        if (!t) return; // refuse to blank a title
+        if (!t) return;
         next.title = t;
       }
       apply(mutate.updateBacklogTask(dataRef.current, slug, taskId, next, today));
     },
-    scheduleTask: (slug, taskId, startTime = DEFAULT_START, endTime = DEFAULT_END) => {
-      if (!today) return;
+    scheduleTask: (slug, taskId, startTime = defaultStart, endTime = defaultEnd) => {
+      if (!day) return;
       const block: TimeBlock = {
         id: newId("blk"),
-        date: today,
+        date: day,
         startTime,
         endTime,
         status: "planned",
-        order: 0, // assigned by the mutation
-        subtasks: [], // the task is moved in by the mutation
+        order: 0,
+        subtasks: [],
       };
-      apply(mutate.scheduleTaskToday(dataRef.current, slug, taskId, block, today));
+      apply(mutate.scheduleTaskToday(dataRef.current, slug, taskId, block, today!));
     },
     addProject: (title, dueDate) => {
       if (!today || !title.trim()) return;
@@ -368,15 +411,36 @@ export default function DashboardProvider({
       if (next.dueDate !== undefined) next.dueDate = next.dueDate.trim() || undefined;
       if (next.title !== undefined) {
         const t = next.title.trim();
-        if (!t) return; // refuse to blank a title
+        if (!t) return;
         next.title = t;
       }
       apply(mutate.updateProject(dataRef.current, slug, next, today));
     },
+    goToDay: (delta) => {
+      setViewedDay((d) => (d ? addDays(d, delta) : d));
+    },
+    goToToday: () => {
+      setViewedDay(today);
+    },
+    undo,
+    updateSettings: (patch) => {
+      apply(mutate.updateSettings(dataRef.current, patch));
+    },
   };
 
   return (
-    <DashboardContext.Provider value={{ data, today, saving, error, actions }}>
+    <DashboardContext.Provider
+      value={{
+        data,
+        today,
+        viewedDay,
+        settings,
+        saving,
+        error,
+        canUndo: undoDepth > 0,
+        actions,
+      }}
+    >
       {children}
     </DashboardContext.Provider>
   );
