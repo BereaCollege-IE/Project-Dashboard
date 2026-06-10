@@ -5,17 +5,27 @@
       "title": "ACS Working Group",
       "description": "",
       "status": "active",
-      "lastTouched": "2026-06-09",
+      "lastTouched": "2026-06-10",
       "dueDate": "2026-08-14",
-      "tasks": [
+      "tasks": [],
+      "blocks": [
         {
-          "id": "task-1c563004-6f50-41f6-a848-9dbbe61376cd",
-          "title": "Prep ideas and agenda for virtual meeting",
-          "done": false,
-          "dueDate": "2026-06-16"
+          "id": "blk-b6de1029-b0fe-416b-8c07-b34883329e69",
+          "date": "2026-06-10",
+          "startTime": "09:00",
+          "endTime": "10:00",
+          "status": "planned",
+          "order": 3,
+          "subtasks": [
+            {
+              "id": "task-1c563004-6f50-41f6-a848-9dbbe61376cd",
+              "title": "Prep ideas and agenda for virtual meeting",
+              "done": false,
+              "dueDate": "2026-06-16"
+            }
+          ]
         }
-      ],
-      "blocks": []
+      ]
     },
     {
       "slug": "cop-framework",
@@ -176,14 +186,8 @@
       "title": "Administrative Assessment",
       "description": "",
       "status": "active",
-      "lastTouched": "2026-06-09",
+      "lastTouched": "2026-06-10",
       "tasks": [
-        {
-          "id": "administrative-assessment-t1",
-          "title": "Send June assessment Tip",
-          "done": false,
-          "dueDate": "2026-06-15"
-        },
         {
           "id": "administrative-assessment-t2",
           "title": "Send July assessment Tip",
@@ -197,7 +201,24 @@
           "dueDate": "2026-08-15"
         }
       ],
-      "blocks": []
+      "blocks": [
+        {
+          "id": "blk-a34513e3-abc9-4165-bcd9-9d91b9d45796",
+          "date": "2026-06-10",
+          "startTime": "09:00",
+          "endTime": "10:00",
+          "status": "planned",
+          "order": 2,
+          "subtasks": [
+            {
+              "id": "administrative-assessment-t1",
+              "title": "Send June assessment Tip",
+              "done": false,
+              "dueDate": "2026-06-15"
+            }
+          ]
+        }
+      ]
     },
     {
       "slug": "review-academic-assessment-reports",
