@@ -16,7 +16,7 @@ export default function StatsSection() {
 
   return (
     <section aria-labelledby="stats-heading" className="space-y-3">
-      <h2 id="stats-heading" className="text-lg font-medium">
+      <h2 id="stats-heading" className="text-lg font-bold uppercase tracking-wide">
         Progress
       </h2>
 

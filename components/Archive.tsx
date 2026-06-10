@@ -26,7 +26,7 @@ export default function Archive() {
           >
             ›
           </span>
-          <h2 id="archive-heading" className="text-lg font-medium">
+          <h2 id="archive-heading" className="text-lg font-bold uppercase tracking-wide">
             Archive
           </h2>
           <span className="text-xs text-gray-500">

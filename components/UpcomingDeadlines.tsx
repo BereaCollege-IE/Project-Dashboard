@@ -15,7 +15,7 @@ export default function UpcomingDeadlines() {
   if (!today) {
     return (
       <section className="space-y-3">
-        <h2 className="text-lg font-medium">Upcoming deadlines</h2>
+        <h2 className="text-lg font-bold uppercase tracking-wide">Upcoming deadlines</h2>
         <p className="text-sm text-gray-400">Checking…</p>
       </section>
     );
@@ -26,7 +26,7 @@ export default function UpcomingDeadlines() {
   return (
     <section aria-labelledby="deadlines-heading" className="space-y-3">
       <div className="flex flex-wrap items-center justify-between gap-2">
-        <h2 id="deadlines-heading" className="text-lg font-medium">
+        <h2 id="deadlines-heading" className="text-lg font-bold uppercase tracking-wide">
           Upcoming deadlines
         </h2>
         <label className="text-xs text-gray-500">

@@ -41,7 +41,7 @@ export default function DailySchedule() {
   if (!today || !viewedDay) {
     return (
       <section className="space-y-3">
-        <h2 className="text-lg font-medium">Schedule</h2>
+        <h2 className="text-lg font-bold uppercase tracking-wide">Schedule</h2>
         <p className="text-sm text-gray-400">Loading your schedule…</p>
       </section>
     );
@@ -76,7 +76,7 @@ export default function DailySchedule() {
     <section aria-labelledby="schedule-heading" className="space-y-3">
       <div className="flex flex-wrap items-center justify-between gap-2">
         <div>
-          <h2 id="schedule-heading" className="text-lg font-medium">
+          <h2 id="schedule-heading" className="text-lg font-bold uppercase tracking-wide">
             Schedule
           </h2>
           <div className="mt-1 flex items-center gap-2 text-sm text-gray-500">

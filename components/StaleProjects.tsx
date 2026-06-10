@@ -14,7 +14,7 @@ export default function StaleProjects() {
   if (!today) {
     return (
       <section className="space-y-3">
-        <h2 className="text-lg font-medium">Stale projects</h2>
+        <h2 className="text-lg font-bold uppercase tracking-wide">Stale projects</h2>
         <p className="text-sm text-gray-400">Checking…</p>
       </section>
     );
@@ -24,7 +24,7 @@ export default function StaleProjects() {
 
   return (
     <section aria-labelledby="stale-heading" className="space-y-3">
-      <h2 id="stale-heading" className="text-lg font-medium">
+      <h2 id="stale-heading" className="text-lg font-bold uppercase tracking-wide">
         Stale projects
       </h2>
 
