@@ -50,15 +50,9 @@
       "title": "Summer Internships",
       "description": "",
       "status": "active",
-      "lastTouched": "2026-06-09",
+      "lastTouched": "2026-06-10",
       "dueDate": "now through October 15, 2026",
       "tasks": [
-        {
-          "id": "summer-internships-t1",
-          "title": "Weekly feedback on reflections",
-          "done": false,
-          "dueDate": "now through August 1, 2026"
-        },
         {
           "id": "summer-internships-t2",
           "title": "Create plan for collecting the 2 required reflection prompts",
@@ -90,7 +84,24 @@
           "dueDate": "2026-10-15"
         }
       ],
-      "blocks": []
+      "blocks": [
+        {
+          "id": "blk-c65ae114-fa09-4992-b932-03b5522f040c",
+          "date": "2026-06-10",
+          "startTime": "09:00",
+          "endTime": "10:00",
+          "status": "planned",
+          "order": 5,
+          "subtasks": [
+            {
+              "id": "summer-internships-t1",
+              "title": "Weekly feedback on reflections",
+              "done": false,
+              "dueDate": "now through August 1, 2026"
+            }
+          ]
+        }
+      ]
     },
     {
       "slug": "project-tracker",
