@@ -134,7 +134,7 @@
       "tasks": [
         {
           "id": "student-support-assessment-t2",
-          "title": "Send July assessment Tip",
+          "title": "Send July assessment tip",
           "done": false,
           "dueDate": "2026-07-15"
         },
@@ -174,7 +174,7 @@
           "subtasks": [
             {
               "id": "student-support-assessment-t1",
-              "title": "Send June assessment Tip",
+              "title": "Send June assessment tip",
               "done": false,
               "dueDate": "2026-06-15"
             }
@@ -191,7 +191,7 @@
       "tasks": [
         {
           "id": "administrative-assessment-t2",
-          "title": "Send July assessment Tip",
+          "title": "Send July assessment tip",
           "done": false,
           "dueDate": "2026-07-15"
         },
@@ -213,7 +213,7 @@
           "subtasks": [
             {
               "id": "administrative-assessment-t1",
-              "title": "Send June assessment Tip",
+              "title": "Send June assessment tip",
               "done": false,
               "dueDate": "2026-06-15"
             }
