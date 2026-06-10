@@ -119,14 +119,8 @@
       "title": "Student Support Assessment",
       "description": "",
       "status": "active",
-      "lastTouched": "2026-06-09",
+      "lastTouched": "2026-06-10",
       "tasks": [
-        {
-          "id": "student-support-assessment-t1",
-          "title": "Send June assessment Tip",
-          "done": false,
-          "dueDate": "2026-06-15"
-        },
         {
           "id": "student-support-assessment-t2",
           "title": "Send July assessment Tip",
@@ -158,7 +152,24 @@
           "dueDate": "2026-09-15"
         }
       ],
-      "blocks": []
+      "blocks": [
+        {
+          "id": "blk-fa8f67ce-4af7-49f4-858e-936e895f491e",
+          "date": "2026-06-10",
+          "startTime": "09:00",
+          "endTime": "10:00",
+          "status": "planned",
+          "order": 1,
+          "subtasks": [
+            {
+              "id": "student-support-assessment-t1",
+              "title": "Send June assessment Tip",
+              "done": false,
+              "dueDate": "2026-06-15"
+            }
+          ]
+        }
+      ]
     },
     {
       "slug": "administrative-assessment",
