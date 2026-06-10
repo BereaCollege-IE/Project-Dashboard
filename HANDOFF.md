@@ -70,7 +70,9 @@ one repo, Contents: Read and write.
   (stat chips, Undo, Export CSV, Settings), `DailySchedule` (day nav ‹›,
   dnd-kit drag reorder), then a two-column row pairing `StatsSection`
   (Progress bars, left) with `UpcomingDeadlines` (7/14/30/90-day window,
-  right) that stacks to one column below the `lg` breakpoint, `StaleProjects`
+  right) that stacks to one column below the `lg` breakpoint — each Progress
+  project name is an anchor link (`#project-<slug>`) that smooth-scrolls to and
+  opens that project's card in `Backlog`, `StaleProjects`
   (threshold from settings), `Backlog` (search/sort/tag filter, priority +
   weekly/monthly recurrence on tasks, tags on projects; hides completed
   projects), `Archive` (completed projects, collapsed, Restore button; hidden

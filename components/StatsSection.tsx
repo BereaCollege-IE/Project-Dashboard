@@ -35,7 +35,18 @@ export default function StatsSection() {
             .map((p) => (
               <li key={p.slug} className="text-xs">
                 <div className="flex items-center justify-between">
-                  <span className="truncate text-gray-700">{p.title}</span>
+                  {/* Jump to this project's card in Projects & tasks, opening
+                      it first in case it was collapsed. */}
+                  <a
+                    href={`#project-${p.slug}`}
+                    onClick={() => {
+                      const el = document.getElementById(`project-${p.slug}`);
+                      if (el instanceof HTMLDetailsElement) el.open = true;
+                    }}
+                    className="truncate text-gray-700 hover:text-blue-600 hover:underline"
+                  >
+                    {p.title}
+                  </a>
                   <span className="ml-2 shrink-0 text-gray-400">
                     {p.done}/{p.total}
                   </span>

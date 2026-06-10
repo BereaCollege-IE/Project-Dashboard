@@ -193,7 +193,11 @@ function ProjectCard({
   const pending = (project.tasks ?? []).filter((t) => !t.done).length;
 
   return (
-    <details open className="rounded-lg border border-gray-200 bg-white/80 shadow-sm backdrop-blur-sm">
+    <details
+      open
+      id={`project-${project.slug}`}
+      className="scroll-mt-6 rounded-lg border border-gray-200 bg-white/80 shadow-sm backdrop-blur-sm"
+    >
       <summary className="flex cursor-pointer items-center justify-between gap-3 p-3">
         <span className="flex items-center gap-2 text-sm font-medium">
           {project.title}

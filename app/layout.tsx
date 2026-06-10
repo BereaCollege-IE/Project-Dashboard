@@ -12,7 +12,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" className="scroll-smooth">
       <body className="min-h-screen text-gray-900 antialiased">
         {/* Decorative background: a blue-gray gradient with a faint, fractal
             texture (SVG feTurbulence) laid over it. Fixed behind all content,
