@@ -90,7 +90,11 @@ export default function TimeBlock({ block, dragHandleProps }: TimeBlockProps) {
           </button>
           <button
             type="button"
-            onClick={() => actions.deleteBlock(block.id)}
+            onClick={() => {
+              if (window.confirm(`Delete this scheduled block for "${block.projectTitle}"?`)) {
+                actions.deleteBlock(block.id);
+              }
+            }}
             className="text-xs text-gray-400 underline"
           >
             Delete
@@ -236,7 +240,11 @@ function SubtaskRow({
         </button>
         <button
           type="button"
-          onClick={() => actions.deleteSubtask(blockId, subtask.id)}
+          onClick={() => {
+            if (window.confirm(`Delete the subtask "${subtask.title}"?`)) {
+              actions.deleteSubtask(blockId, subtask.id);
+            }
+          }}
           className="text-xs text-gray-400 underline"
         >
           Delete

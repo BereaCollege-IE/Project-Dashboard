@@ -544,7 +544,11 @@ function BacklogTaskRow({
         )}
         <button
           type="button"
-          onClick={() => actions.deleteBacklogTask(slug, task.id)}
+          onClick={() => {
+            if (window.confirm(`Delete the task "${task.title}"?`)) {
+              actions.deleteBacklogTask(slug, task.id);
+            }
+          }}
           className="text-xs text-gray-400 underline"
         >
           Delete
