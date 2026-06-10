@@ -532,17 +532,27 @@
       "status": "active",
       "lastTouched": "2026-06-10",
       "dueDate": "Monthly",
-      "tasks": [
+      "tasks": [],
+      "blocks": [
         {
-          "id": "task-41de09ca-db19-46e0-94f1-6c15e7871c09",
-          "title": "Balance P-card",
-          "done": false,
-          "dueDate": "3/31/2026",
-          "priority": "high",
-          "recurrence": "monthly"
+          "id": "blk-57a697e4-3954-47c2-bb6e-ddf52bc9895c",
+          "date": "2026-06-10",
+          "startTime": "09:00",
+          "endTime": "10:00",
+          "status": "planned",
+          "order": 6,
+          "subtasks": [
+            {
+              "id": "task-41de09ca-db19-46e0-94f1-6c15e7871c09",
+              "title": "Balance P-card",
+              "done": false,
+              "dueDate": "3/31/2026",
+              "priority": "high",
+              "recurrence": "monthly"
+            }
+          ]
         }
-      ],
-      "blocks": []
+      ]
     }
   ]
 }
