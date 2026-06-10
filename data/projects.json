@@ -34,26 +34,16 @@
       "status": "active",
       "lastTouched": "2026-06-10",
       "dueDate": "Summer 2026",
-      "tasks": [],
-      "blocks": [
+      "tasks": [
         {
-          "id": "blk-99126623-bf3e-4c8a-a086-321df80c1fbd",
-          "date": "2026-06-10",
-          "startTime": "06:00",
-          "endTime": "07:00",
-          "status": "complete",
-          "order": 0,
-          "subtasks": [
-            {
-              "id": "cop-framework-t1",
-              "title": "Revise framework with additional resources/material added to OneDrive folder",
-              "done": true,
-              "dueDate": "2026-06-15",
-              "completedAt": "2026-06-09"
-            }
-          ]
+          "id": "cop-framework-t1",
+          "title": "Revise framework with additional resources/material added to OneDrive folder",
+          "done": true,
+          "dueDate": "2026-06-15",
+          "completedAt": "2026-06-09"
         }
-      ]
+      ],
+      "blocks": []
     },
     {
       "slug": "summer-internships",
