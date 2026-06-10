@@ -62,7 +62,18 @@ export default function UpcomingDeadlines() {
               >
                 <div className="min-w-0">
                   <p className="text-sm">
-                    {d.title}
+                    {/* Jump to this project's card in Projects & tasks,
+                        opening it first in case it was collapsed. */}
+                    <a
+                      href={`#project-${d.projectSlug}`}
+                      onClick={() => {
+                        const el = document.getElementById(`project-${d.projectSlug}`);
+                        if (el instanceof HTMLDetailsElement) el.open = true;
+                      }}
+                      className="hover:text-blue-600 hover:underline"
+                    >
+                      {d.title}
+                    </a>
                     {d.priority && (
                       <span className="ml-2 rounded bg-gray-100 px-1.5 py-0.5 text-[10px] uppercase text-gray-500">
                         {d.priority}
