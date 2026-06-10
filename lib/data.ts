@@ -118,6 +118,23 @@ export function formatDueDate(value?: string): string {
   return value;
 }
 
+// Full month names, for the more prominent date displays.
+const MONTHS_LONG = [
+  "January", "February", "March", "April", "May", "June",
+  "July", "August", "September", "October", "November", "December",
+];
+
+// Like formatDueDate but with the full month name spelled out: "June 10, 2026".
+// Free-text phrases pass through unchanged; empty input returns "".
+export function formatLongDate(value?: string): string {
+  if (!value) return "";
+  if (isISODate(value)) {
+    const [year, month, day] = value.split("-").map(Number);
+    return `${MONTHS_LONG[month - 1]} ${day}, ${year}`;
+  }
+  return value;
+}
+
 // A task is overdue when it has an exact past date and is not yet done.
 // ISO date strings compare correctly with a plain string comparison.
 export function isOverdue(

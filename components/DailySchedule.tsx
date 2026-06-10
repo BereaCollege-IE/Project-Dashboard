@@ -22,7 +22,12 @@ import {
 } from "@dnd-kit/sortable";
 import SortableTimeBlock from "./SortableTimeBlock";
 import { useDashboard } from "./DashboardProvider";
-import { getBlocksForDay, dayLabel } from "@/lib/data";
+import { getBlocksForDay, dayLabel, daysBetween, formatLongDate } from "@/lib/data";
+
+// Full weekday names, for the prominent date line in the Schedule header.
+const WEEKDAYS_LONG = [
+  "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday",
+];
 
 export default function DailySchedule() {
   const { data, today, viewedDay, error, actions } = useDashboard();
@@ -45,6 +50,18 @@ export default function DailySchedule() {
   const blocks = getBlocksForDay(data, viewedDay);
   const blockIds = blocks.map((b) => b.id);
   const label = dayLabel(viewedDay, today);
+
+  // The prominent day word: a relative term for nearby days, otherwise the full
+  // weekday name. Paired with the long date, e.g. "Today · June 10, 2026".
+  const diff = daysBetween(today, viewedDay);
+  const dayWord =
+    diff === 0
+      ? "Today"
+      : diff === 1
+        ? "Tomorrow"
+        : diff === -1
+          ? "Yesterday"
+          : WEEKDAYS_LONG[new Date(`${viewedDay}T00:00:00`).getDay()];
 
   function handleDragEnd(event: DragEndEvent): void {
     const { active, over } = event;
@@ -71,8 +88,8 @@ export default function DailySchedule() {
             >
               ‹
             </button>
-            <span className="min-w-[8rem] text-center">
-              {label} <span className="text-gray-400">· {viewedDay}</span>
+            <span className="min-w-[14rem] text-center text-xl font-bold text-blue-800">
+              {dayWord} · {formatLongDate(viewedDay)}
             </span>
             <button
               type="button"
