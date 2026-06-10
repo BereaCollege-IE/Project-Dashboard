@@ -225,14 +225,8 @@
       "title": "Review of Academic Assessment Reports",
       "description": "",
       "status": "active",
-      "lastTouched": "2026-06-09",
+      "lastTouched": "2026-06-10",
       "tasks": [
-        {
-          "id": "review-academic-assessment-reports-t1",
-          "title": "Organize all reports and supporting material in Box",
-          "done": false,
-          "dueDate": "2026-06-20"
-        },
         {
           "id": "review-academic-assessment-reports-t2",
           "title": "Refine assessment review app in Claude Cowork or Claude Code",
@@ -246,7 +240,24 @@
           "dueDate": "2026-08-15"
         }
       ],
-      "blocks": []
+      "blocks": [
+        {
+          "id": "blk-e236db19-a7b0-4065-a8f9-de98159141af",
+          "date": "2026-06-10",
+          "startTime": "09:00",
+          "endTime": "10:00",
+          "status": "planned",
+          "order": 4,
+          "subtasks": [
+            {
+              "id": "review-academic-assessment-reports-t1",
+              "title": "Organize all reports and supporting material in Box",
+              "done": false,
+              "dueDate": "2026-06-20"
+            }
+          ]
+        }
+      ]
     },
     {
       "slug": "academic-affairs-newsletter",
