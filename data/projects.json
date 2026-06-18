@@ -243,7 +243,7 @@
           "id": "task-7b163b15-10a8-4d1a-913e-bf87e20212e3",
           "title": "Contact departments who have not submitted their reports",
           "done": false,
-          "dueDate": "08/15/2026",
+          "dueDate": "Aug 15, 2026",
           "priority": "high",
           "recurrence": "weekly"
         }
