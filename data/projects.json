@@ -330,27 +330,16 @@
           "title": "Create demonstration materials for use during workshop",
           "done": false,
           "dueDate": "2026-07-17"
+        },
+        {
+          "id": "sacscoc-institute-assessment-workshop-t1",
+          "title": "Meet with SACSCOC Institute staff (Alana Veal) to discuss workshop logistics",
+          "done": true,
+          "dueDate": "2026-06-16",
+          "completedAt": "2026-06-18"
         }
       ],
-      "blocks": [
-        {
-          "id": "blk-be79149a-1372-41a3-9cdb-3f384c2503c7",
-          "date": "2026-06-18",
-          "startTime": "09:00",
-          "endTime": "10:00",
-          "status": "complete",
-          "order": 0,
-          "subtasks": [
-            {
-              "id": "sacscoc-institute-assessment-workshop-t1",
-              "title": "Meet with SACSCOC Institute staff (Alana Veal) to discuss workshop logistics",
-              "done": true,
-              "dueDate": "2026-06-16",
-              "completedAt": "2026-06-18"
-            }
-          ]
-        }
-      ]
+      "blocks": []
     },
     {
       "slug": "sacscoc-institute-accreditation-workshop",
