@@ -308,12 +308,6 @@
           "dueDate": "2026-06-19"
         },
         {
-          "id": "sacscoc-institute-assessment-workshop-t3",
-          "title": "Assemble pre-workshop readings to distribute 2-3 weeks before workshop",
-          "done": false,
-          "dueDate": "2026-07-01"
-        },
-        {
           "id": "sacscoc-institute-assessment-workshop-t4",
           "title": "Assemble resources to share at institute",
           "done": false,
@@ -339,7 +333,24 @@
           "completedAt": "2026-06-18"
         }
       ],
-      "blocks": []
+      "blocks": [
+        {
+          "id": "blk-9b5804c1-9612-4fa4-8e16-ce64043e0f38",
+          "date": "2026-06-18",
+          "startTime": "09:00",
+          "endTime": "10:00",
+          "status": "planned",
+          "order": 1,
+          "subtasks": [
+            {
+              "id": "sacscoc-institute-assessment-workshop-t3",
+              "title": "Assemble pre-workshop readings to distribute 2-3 weeks before workshop",
+              "done": false,
+              "dueDate": "2026-07-01"
+            }
+          ]
+        }
+      ]
     },
     {
       "slug": "sacscoc-institute-accreditation-workshop",
