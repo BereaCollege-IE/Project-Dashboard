@@ -108,14 +108,8 @@
       "title": "Project Tracker",
       "description": "",
       "status": "active",
-      "lastTouched": "2026-06-09",
+      "lastTouched": "2026-06-18",
       "tasks": [
-        {
-          "id": "project-tracker-t1",
-          "title": "Continue making any revisions",
-          "done": false,
-          "dueDate": "2026-06-19"
-        },
         {
           "id": "project-tracker-t2",
           "title": "Once revisions are complete, share user guide with others",
@@ -123,7 +117,24 @@
           "dueDate": "2026-06-24"
         }
       ],
-      "blocks": []
+      "blocks": [
+        {
+          "id": "blk-5fce59c7-db80-4970-a0a8-96085ad2b000",
+          "date": "2026-06-18",
+          "startTime": "09:00",
+          "endTime": "10:00",
+          "status": "planned",
+          "order": 2,
+          "subtasks": [
+            {
+              "id": "project-tracker-t1",
+              "title": "Continue making any revisions",
+              "done": false,
+              "dueDate": "2026-06-19"
+            }
+          ]
+        }
+      ]
     },
     {
       "slug": "student-support-assessment",
