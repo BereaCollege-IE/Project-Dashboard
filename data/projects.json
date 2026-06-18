@@ -584,9 +584,17 @@
       "title": "P-card Reconciliation",
       "description": "",
       "status": "active",
-      "lastTouched": "2026-06-10",
+      "lastTouched": "2026-06-18",
       "dueDate": "Monthly",
-      "tasks": [],
+      "tasks": [
+        {
+          "id": "task-9b020f31-a390-4489-94ce-fc93c864d55d",
+          "title": "Review all P-card charges for the month",
+          "done": false,
+          "priority": "medium",
+          "recurrence": "monthly"
+        }
+      ],
       "blocks": [
         {
           "id": "blk-57a697e4-3954-47c2-bb6e-ddf52bc9895c",
