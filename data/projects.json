@@ -391,8 +391,9 @@
             {
               "id": "sacscoc-institute-accreditation-workshop-t1",
               "title": "Meet with SACSCOC Institute staff (Alana Veal) to discuss workshop logistics",
-              "done": false,
-              "dueDate": "2026-06-16"
+              "done": true,
+              "dueDate": "2026-06-16",
+              "completedAt": "2026-06-18"
             }
           ]
         }
