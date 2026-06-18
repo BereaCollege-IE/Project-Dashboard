@@ -237,14 +237,8 @@
       "title": "Review of Academic Assessment Reports",
       "description": "",
       "status": "active",
-      "lastTouched": "2026-06-10",
+      "lastTouched": "2026-06-18",
       "tasks": [
-        {
-          "id": "review-academic-assessment-reports-t2",
-          "title": "Refine assessment review app in Claude Cowork or Claude Code",
-          "done": false,
-          "dueDate": "2026-06-25"
-        },
         {
           "id": "review-academic-assessment-reports-t3",
           "title": "Review all reports and draft feedback letters",
@@ -266,6 +260,22 @@
               "title": "Organize all reports and supporting material in Box",
               "done": false,
               "dueDate": "2026-06-20"
+            }
+          ]
+        },
+        {
+          "id": "blk-19ce7723-74a1-431f-890f-dbe69412171c",
+          "date": "2026-06-18",
+          "startTime": "09:00",
+          "endTime": "10:00",
+          "status": "planned",
+          "order": 3,
+          "subtasks": [
+            {
+              "id": "review-academic-assessment-reports-t2",
+              "title": "Refine assessment review app in Claude Cowork or Claude Code",
+              "done": false,
+              "dueDate": "2026-06-25"
             }
           ]
         }
