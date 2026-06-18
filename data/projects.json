@@ -346,14 +346,8 @@
       "title": "SACSCOC Institute: Accreditation Workshop",
       "description": "Part of the SACSCOC Summer Institute.",
       "status": "active",
-      "lastTouched": "2026-06-09",
+      "lastTouched": "2026-06-18",
       "tasks": [
-        {
-          "id": "sacscoc-institute-accreditation-workshop-t1",
-          "title": "Meet with SACSCOC Institute staff (Alana Veal) to discuss workshop logistics",
-          "done": false,
-          "dueDate": "2026-06-16"
-        },
         {
           "id": "sacscoc-institute-accreditation-workshop-t2",
           "title": "Meet with SACSCOC staff assistants (Nuria & Alexei) to discuss syllabus and workshop details",
@@ -385,7 +379,24 @@
           "dueDate": "2026-07-17"
         }
       ],
-      "blocks": []
+      "blocks": [
+        {
+          "id": "blk-a89295ba-a5db-41f6-8c1f-d564488dd875",
+          "date": "2026-06-18",
+          "startTime": "09:00",
+          "endTime": "10:00",
+          "status": "planned",
+          "order": 0,
+          "subtasks": [
+            {
+              "id": "sacscoc-institute-accreditation-workshop-t1",
+              "title": "Meet with SACSCOC Institute staff (Alana Veal) to discuss workshop logistics",
+              "done": false,
+              "dueDate": "2026-06-16"
+            }
+          ]
+        }
+      ]
     },
     {
       "slug": "curriculum-mapping",
