@@ -299,14 +299,8 @@
       "title": "SACSCOC Institute: Assessment Workshop",
       "description": "Part of the SACSCOC Summer Institute.",
       "status": "active",
-      "lastTouched": "2026-06-09",
+      "lastTouched": "2026-06-18",
       "tasks": [
-        {
-          "id": "sacscoc-institute-assessment-workshop-t1",
-          "title": "Meet with SACSCOC Institute staff (Alana Veal) to discuss workshop logistics",
-          "done": false,
-          "dueDate": "2026-06-16"
-        },
         {
           "id": "sacscoc-institute-assessment-workshop-t2",
           "title": "Meet with SACSCOC staff assistants (Nuria & Alexei) to discuss syllabus and workshop details",
@@ -338,7 +332,24 @@
           "dueDate": "2026-07-17"
         }
       ],
-      "blocks": []
+      "blocks": [
+        {
+          "id": "blk-be79149a-1372-41a3-9cdb-3f384c2503c7",
+          "date": "2026-06-18",
+          "startTime": "09:00",
+          "endTime": "10:00",
+          "status": "planned",
+          "order": 0,
+          "subtasks": [
+            {
+              "id": "sacscoc-institute-assessment-workshop-t1",
+              "title": "Meet with SACSCOC Institute staff (Alana Veal) to discuss workshop logistics",
+              "done": false,
+              "dueDate": "2026-06-16"
+            }
+          ]
+        }
+      ]
     },
     {
       "slug": "sacscoc-institute-accreditation-workshop",
