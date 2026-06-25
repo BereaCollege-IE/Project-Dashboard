@@ -364,6 +364,12 @@
           "done": true,
           "dueDate": "2026-06-16",
           "completedAt": "2026-06-18"
+        },
+        {
+          "id": "sacscoc-institute-assessment-workshop-t2",
+          "title": "Meet with SACSCOC staff assistants (Nuria & Alexei) to discuss syllabus and workshop details",
+          "done": false,
+          "dueDate": "2026-06-19"
         }
       ],
       "blocks": [
@@ -380,22 +386,6 @@
               "title": "Assemble pre-workshop readings to distribute 2-3 weeks before workshop",
               "done": false,
               "dueDate": "2026-06-15"
-            }
-          ]
-        },
-        {
-          "id": "blk-fb4d7b86-997e-4e41-b282-bc911cf477db",
-          "date": "2026-06-25",
-          "startTime": "09:00",
-          "endTime": "10:00",
-          "status": "complete",
-          "order": 0,
-          "subtasks": [
-            {
-              "id": "sacscoc-institute-assessment-workshop-t2",
-              "title": "Meet with SACSCOC staff assistants (Nuria & Alexei) to discuss syllabus and workshop details",
-              "done": false,
-              "dueDate": "2026-06-19"
             }
           ]
         }
