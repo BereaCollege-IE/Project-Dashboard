@@ -368,8 +368,9 @@
         {
           "id": "sacscoc-institute-assessment-workshop-t2",
           "title": "Meet with SACSCOC staff assistants (Nuria & Alexei) to discuss syllabus and workshop details",
-          "done": false,
-          "dueDate": "2026-06-19"
+          "done": true,
+          "dueDate": "2026-06-19",
+          "completedAt": "2026-06-25"
         }
       ],
       "blocks": [
